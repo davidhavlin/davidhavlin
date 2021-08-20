@@ -101,7 +101,7 @@ export default {
 		font-family: 'Press Start 2P', cursive;
 		font-size: 12px;
 		text-transform: uppercase;
-		color: #fff;
+		color: #0af0f0;
 		padding-top: 0.2rem;
 		opacity: 0;
 		transform: scale(0.7);
