@@ -144,7 +144,7 @@ $bar-color: #46009e;
 	height: 100%;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 1.5rem;
+	font-size: 1.4rem;
 	margin: 1rem;
 	list-style-type: none;
 	white-space: pre;
@@ -213,5 +213,11 @@ $bar-color: #46009e;
 .loadingComponent-leave-to {
 	transform: translateY(-10%);
 	opacity: 0;
+}
+
+@media (max-width: 500px) {
+	.terminal {
+		font-size: 1rem;
+	}
 }
 </style>

@@ -227,7 +227,7 @@ export default {
 	width: 170px;
 	height: 170px;
 	border-radius: 50%;
-	border: 1px solid #7206d51a;
+	border: 1px solid #7206d545;
 	animation: rotate 20s infinite linear;
 	pointer-events: none;
 }
@@ -267,7 +267,7 @@ export default {
 	height: 100px;
 	border-radius: 50%;
 	// background: yellow;
-	border: 1px solid #7206d51a;
+	border: 1px solid #7206d540;
 	display: flex;
 	justify-content: center;
 	align-items: center;

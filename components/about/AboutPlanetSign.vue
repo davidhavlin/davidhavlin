@@ -2,7 +2,9 @@
 	<div>
 		<div v-if="!closed" class="sign">
 			<div class="bar">
-				<div class="exit" @click="closed = true">x</div>
+				<div class="exit" @click="closed = true">
+					<span><i class="fas fa-times"></i></span>
+				</div>
 			</div>
 			<div class="heart">
 				<svg
@@ -47,12 +49,6 @@ export default {
 			this.$store.commit('getElLeft', left)
 
 			this.$store.commit('runMagicStars')
-			this.$refs.heart.style.fill = '#ff0b55'
-			this.$refs.heart.style.stroke = '#0fe0fc'
-			setTimeout(() => {
-				this.$refs.heart.style.fill = '#34b3f6'
-				this.$refs.heart.style.stroke = '#390779'
-			}, 1000)
 		},
 	},
 }
@@ -60,13 +56,12 @@ export default {
 
 <style lang="scss" scoped>
 .sign {
-	width: 120px;
+	width: 130px;
 	background: #5903e2;
 	color: #57c5ff;
-	font-family: 'Press Start 2P', cursive;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 0.5em;
+	font-family: 'Press Start 2P', cursive;
 	padding: 0.2rem;
 	line-height: 13px;
 	border-radius: 2px;
@@ -82,14 +77,23 @@ export default {
 		padding: 0.1rem;
 
 		.exit {
+			position: relative;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			width: 20px;
 			height: 100%;
-			color: #330a6f;
-			background: #5903e2;
+			color: #fff;
+			background: #e203ae;
 			cursor: pointer;
+			font-size: 13px;
+
+			// span {
+			// 	display: block;
+			// 	position: absolute;
+			// 	font-weight: 700;
+			// 	height: 18px;
+			// }
 		}
 	}
 	.heart {
@@ -99,27 +103,36 @@ export default {
 			height: auto;
 			path {
 				transition: all 0.5s ease;
-				fill: #34b3f6;
+				fill: #e203ae;
 				stroke: #390779;
 			}
 		}
 	}
 	p {
+		color: #fff;
 		margin: 0.6rem 0rem;
+		font-size: 12px;
+		word-spacing: -5px;
+		line-height: 17px;
+		transform: scale(0.9);
 	}
 	button {
 		cursor: pointer;
 		margin-bottom: 0.5rem;
-		color: #dbcff6;
-		background: #3f0c8b;
+		color: #fff;
+		background: #390779;
 		padding: 0.1rem 0.7rem;
-		border: 1px solid #15052959;
-		font-size: 1.4em;
+		border: 1px solid #390779;
+		font-size: 12px;
+		font-weight: 600;
+		font-family: arial;
+		// text-transform: uppercase;
 		&:focus {
 			outline: none;
 		}
 		&:hover {
 			border: 1px solid #00ddff;
+			color: #fff;
 		}
 	}
 }

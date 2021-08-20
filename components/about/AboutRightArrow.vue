@@ -1,6 +1,7 @@
 <template>
 	<div class="right-arrow">
-		<AboutInfoSign v-if="infoSign" />
+		<!-- <AboutInfoSign v-if="infoSign" /> -->
+		<div v-if="infoSign" class="info">čo ovládam?</div>
 		<svg
 			width="70"
 			height="94"
@@ -38,6 +39,22 @@ export default {
 	transform: translateY(-50%);
 	cursor: pointer;
 
+	.info {
+		position: absolute;
+		font-family: 'Press Start 2P', cursive;
+		top: 39px;
+		left: -155px;
+		// color: #34f8b1;
+		color: #32a2e6;
+		font-size: 13px;
+		animation: right 2s infinite;
+	}
+	@keyframes right {
+		50% {
+			transform: translateX(12px);
+		}
+	}
+
 	svg {
 		width: 50px;
 	}
@@ -51,7 +68,7 @@ export default {
 	&:focus {
 		path {
 			// stroke: #34b1f8;
-			stroke: #0af0f0;
+			stroke: #34f8b1;
 		}
 	}
 }

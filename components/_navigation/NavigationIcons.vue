@@ -20,7 +20,7 @@
 		<div class="link projects-icon" :class="{ disabled: loading }">
 			<nuxt-link to="/projects">
 				<ProjectsIcon />
-				<div class="link-name">Projects</div>
+				<div class="link-name">projects</div>
 			</nuxt-link>
 		</div>
 
@@ -60,7 +60,7 @@ export default {
 @import '~assets/scss/_colors';
 .disabled {
 	pointer-events: none;
-	opacity: 0.7;
+	opacity: 0.5;
 	filter: grayscale(50%);
 }
 .navigation-links {
@@ -68,9 +68,10 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: transparent;
+	background: #1a0536;
 	height: 100%;
-	width: 4.4rem;
+	// width: 4.4rem;
+	width: 80px;
 	pointer-events: all;
 	position: fixed;
 	transform: translate3D(0, 0, 0);
@@ -82,15 +83,15 @@ export default {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		margin-bottom: 1.3rem;
+		margin-bottom: 14px;
 
 		svg {
-			width: 35px;
+			width: 39px;
 			height: auto;
 		}
 	}
 	.contact-icon svg {
-		width: 31px;
+		width: 35px;
 	}
 	.link:last-child {
 		margin-bottom: 0;
@@ -98,31 +99,32 @@ export default {
 
 	.link-name {
 		font-family: 'Press Start 2P', cursive;
-		font-size: 0.45em;
+		font-size: 12px;
 		text-transform: uppercase;
 		color: #fff;
 		padding-top: 0.2rem;
 		opacity: 0;
+		transform: scale(0.7);
 	}
 }
 
-.link-name::after {
-	content: '';
-	position: absolute;
-	width: 3px;
-	margin-top: -1px;
-	margin-left: 1px;
-	height: 1.1em;
-	border-right: 4px solid #0af0f0;
-	opacity: 0;
-	-webkit-animation: type 1s steps(2, jump-none) infinite;
-	animation: type 1s steps(2, jump-none) infinite;
-}
-@keyframes type {
-	to {
-		opacity: 100%;
-	}
-}
+// .link-name::after {
+// 	content: '';
+// 	position: absolute;
+// 	width: 3px;
+// 	margin-top: -2px;
+// 	margin-left: 1px;
+// 	height: 1.1em;
+// 	border-right: 4px solid #34f8b1;
+// 	opacity: 0;
+// 	-webkit-animation: type 1s steps(2, jump-none) infinite;
+// 	animation: type 1s steps(2, jump-none) infinite;
+// }
+// @keyframes type {
+// 	to {
+// 		opacity: 100%;
+// 	}
+// }
 
 // ------- AKTIV KLASSA
 .nuxt-link-exact-active {
@@ -133,16 +135,19 @@ export default {
 }
 
 /* --------- HOVERY----------- */
-.link:hover,
-.link:focus {
-	.link-name {
-		color: #0af0f0;
-		opacity: 1;
+@media (min-width: 800px) {
+	.link:hover,
+	.link:focus {
+		.link-name {
+			// color: #34f8b1;
+			color: #0af0f0;
+			opacity: 1;
+		}
 	}
-}
-// pri hoverovani nech neblika to lomitko
-.link:hover .link-name::after {
-	display: none;
+	// pri hoverovani nech neblika to lomitko
+	.link:hover .link-name::after {
+		display: none;
+	}
 }
 
 // MEDIA QUERIES -------------
@@ -152,40 +157,31 @@ export default {
 		background: var(--navbar-color);
 
 		width: 100%;
-		height: 4.4rem;
+		height: 80px;
 		bottom: 0;
 		left: unset;
 
 		.link {
 			position: relative;
 			margin-bottom: 0rem;
-			margin-right: 2rem;
-
-			&:last-child {
-				margin-right: 0rem;
-			}
+			margin: 0 12px;
 		}
 		.link-name {
 			position: absolute;
-			top: 87%;
-			padding-top: 6px;
-			// opacity: 0;
-		}
-		.home-icon .link-name {
-			left: 4px;
-		}
-		.about-icon .link-name {
-			left: 0;
-		}
-		.projects-icon .link-name {
-			left: -11px;
-		}
-		.contact-icon .link-name {
-			left: -8px;
+			left: 50%;
+			transform: translateX(-50%) scale(0.8);
 		}
 		.link-name::after {
 			display: none;
 		}
+		// .link:focus,
+		// .link:hover {
+		// 	.link-name {
+		// 		// color: #34f8b1;
+		// 		color: #0af0f0;
+		// 		opacity: 0;
+		// 	}
+		// }
 	}
 }
 </style>

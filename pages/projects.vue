@@ -302,13 +302,12 @@ export default {
 	},
 	head() {
 		return {
-			title: 'Projects',
+			title: 'David Havlin - Projects',
 			meta: [
 				{
 					hid: 'description',
 					name: 'description',
-					content:
-						'Moja osobna portfolio web stranka, David Havlín | Projekty vrvideosaratov, davidhavlin',
+					content: 'Moja osobná portfólio web stránka, David Havlín',
 				},
 			],
 		}

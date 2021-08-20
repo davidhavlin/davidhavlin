@@ -11,7 +11,7 @@
 				<div class="fog"></div>
 				<div class="planet" :class="{ planetMove: nextPage }">
 					<AboutPlanetSign class="planet-sign" />
-					<PlanetBig class="planet1" />
+					<!-- <PlanetBig class="planet1" /> -->
 					<Planet class="planet2" />
 				</div>
 			</section>
@@ -28,11 +28,11 @@
 
 <script>
 import Planet from '~/assets/images/svg/Planet.svg'
-import PlanetBig from '~/assets/images/svg/PlanetBig.svg'
+// import PlanetBig from '~/assets/images/svg/PlanetBig.svg'
 export default {
 	components: {
 		Planet,
-		PlanetBig,
+		// PlanetBig,
 	},
 	data() {
 		return {
@@ -70,7 +70,7 @@ export default {
 	},
 	head() {
 		return {
-			title: 'About me',
+			title: 'David Havlin - About me',
 		}
 	},
 }
@@ -105,6 +105,7 @@ section {
 	width: 3679px;
 	height: 433px;
 	z-index: 1;
+	opacity: 0.2;
 	bottom: 0;
 	pointer-events: none;
 	background: url('~assets/images/fog.webp') no-repeat;
@@ -129,10 +130,11 @@ section {
 
 	.planet1 {
 		position: absolute;
-		bottom: -161px;
-		width: 384px;
+		bottom: 4px;
+		width: 284px;
 		height: auto;
-		right: 30%;
+		left: 2%;
+		opacity: 0.2;
 	}
 	.planet2 {
 		position: absolute;
@@ -140,6 +142,7 @@ section {
 		right: 100px;
 		width: 150px;
 		height: auto;
+		opacity: 0.3;
 	}
 	.planet-sign {
 		position: absolute;

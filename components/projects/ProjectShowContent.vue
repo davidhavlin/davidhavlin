@@ -8,7 +8,7 @@
 			<h4 :style="{ color: project.color.titles }">url</h4>
 			<a
 				:href="project.url"
-				:style="{ color: linkColor, whiteSpace: 'nowrap' }"
+				:style="{ color: '#fff', whiteSpace: 'nowrap' }"
 				target="new_blank"
 			>
 				{{ shortUrl(project.url) }}
@@ -31,7 +31,7 @@
 			<h4 :style="{ color: project.color.titles }">github</h4>
 			<a
 				:href="project.github"
-				:style="{ color: linkColor, display: 'flex' }"
+				:style="{ color: '#fff', display: 'flex' }"
 				target="new_blank"
 			>
 				<img

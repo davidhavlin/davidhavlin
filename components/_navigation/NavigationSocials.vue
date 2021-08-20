@@ -23,7 +23,7 @@
 				<div v-show="socials" class="open-empty-box">
 					<OpenBoxEmpty />
 				</div>
-				<div class="box-title">Socials</div>
+				<!-- <div class="box-title">socials</div> -->
 			</section>
 
 			<section
@@ -118,8 +118,8 @@ export default {
 	overflow: hidden;
 }
 .socials {
-	margin-bottom: 1rem;
-	margin-left: 0.4rem;
+	margin-bottom: 15px;
+	margin-left: 24px;
 	position: fixed;
 	bottom: 0;
 	pointer-events: all;
@@ -137,16 +137,20 @@ export default {
 		align-items: center;
 		color: #fff;
 		font-family: 'Press Start 2P', cursive;
-		font-size: 0.5em;
+		font-size: 12px;
 		position: absolute;
-		top: -7px;
-		left: 30px;
+		top: -10px;
+		left: 20px;
 		background: #d90d3a;
-		padding: 0.2rem;
+		padding: 2px 4px;
 		border-radius: 3px;
 		box-sizing: content-box;
 		z-index: 1;
 		pointer-events: none;
+
+		span {
+			transform: scale(0.9);
+		}
 	}
 
 	.box,
@@ -164,10 +168,11 @@ export default {
 	}
 
 	.box-title {
-		font-family: 'Press Start 2P', cursive;
-		font-size: 0.4em;
+		font-family: 'Rubik', sans-serif;
+		font-size: 12px;
+		font-weight: 500;
 		color: $text-color;
-		text-transform: uppercase;
+		// text-transform: uppercase;
 		padding: 0.2rem;
 		padding-bottom: 0;
 	}
@@ -182,7 +187,7 @@ export default {
 	transform: scale(1);
 	border-radius: 50%;
 	top: 13px;
-	left: 21px;
+	left: 10px;
 	z-index: -1;
 	transition: transform 0.5s cubic-bezier(0.68, -0.75, 0.265, 1.75);
 }

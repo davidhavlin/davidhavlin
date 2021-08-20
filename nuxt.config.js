@@ -34,6 +34,10 @@ export default {
 			{ src: '../three.min.js' },
 			{ src: '../TweenMax.min.js' },
 			{ src: '../hover-effect.umd.js' },
+			{
+				src: 'https://kit.fontawesome.com/2c3ac5bea1.js',
+				crossorigin: 'anonymous',
+			},
 		],
 	},
 	/*

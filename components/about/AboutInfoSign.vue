@@ -1,7 +1,9 @@
 <template>
 	<div class="info-sign">
-		<div class="bar"><div class="exit">x</div></div>
-		<p>čo ovládam?</p>
+		<div class="bar">
+			<div class="exit"><span>x</span></div>
+		</div>
+		<p>Čo ovládam?</p>
 
 		<button>ok</button>
 	</div>
@@ -12,15 +14,18 @@ $sign-color: #03e271;
 
 .info-sign {
 	position: absolute;
-	top: -79px;
-	left: -72px;
-	width: 120px;
+	top: -99px;
+	left: -83px;
+	width: 130px;
+	height: 100px;
 	background: #34b3f6;
 	color: #390779;
-	font-family: 'Press Start 2P', cursive;
 	font-style: normal;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	font-weight: normal;
-	font-size: 0.5em;
 	padding: 0.2rem;
 	line-height: 13px;
 	border-radius: 2px;
@@ -48,19 +53,30 @@ $sign-color: #03e271;
 			color: #5903e1;
 			background: #34b2f5;
 			cursor: pointer;
+
+			span {
+				display: block;
+				position: absolute;
+				font-weight: 700;
+				height: 18px;
+			}
 		}
 	}
 	p {
-		margin: 0.6rem 0rem;
+		margin: 16px 0;
+		font-size: 15px;
+		font-weight: 600;
 	}
 	button {
 		cursor: pointer;
 		margin-bottom: 0.5rem;
-		color: #ffffff;
+		color: #57c5ff;
 		background: #5903e1;
 		padding: 0.1rem 0.7rem;
 		border: 1px solid #390779;
-		font-size: 1.4em;
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: uppercase;
 	}
 }
 .info-sign::after {

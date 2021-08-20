@@ -17,13 +17,13 @@
 export default {
 	head() {
 		return {
-			title: 'Home',
+			title: 'David Havlin - web developer',
 			meta: [
 				{
 					hid: 'description',
 					name: 'description',
 					content:
-						'Moja osobna portfolio web stranka, David Havlín | My personal portfolio website, David Havlín',
+						'Moja osobná portfólio web stránka, David Havlín | My personal portfolio website, David Havlín',
 				},
 			],
 		}

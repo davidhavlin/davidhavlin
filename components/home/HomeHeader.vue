@@ -122,6 +122,10 @@ export default {
 		font-size: 1.25em;
 		z-index: 1;
 		transition: opacity 1s ease;
+
+		p:first-child {
+			margin-bottom: 4px;
+		}
 	}
 }
 

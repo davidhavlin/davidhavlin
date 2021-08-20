@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;400;700&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
 
 .home-header {
 	.letter {
@@ -28,18 +27,21 @@
 	--navbar-color: #0e031b;
 
 	--highlight-color: #0af0f0;
+	--highlight-color2: #34f8b1;
 	/*-------------------- //// ------------------------*/
 }
 
 // **** NAGIATION LINKY ****** //
-.contact-icon:hover {
+.contact-icon:hover,
+.nuxt-link-exact-active {
 	.ContactIcon_svg__contact-stroke {
 		stroke: var(--highlight-color);
 	}
 }
 
 .link:hover,
-.link:focus {
+.link:focus,
+.nuxt-link-exact-active {
 	.ContactIcon_svg__icon-stroke,
 	.ProjectsIcon_svg__icon-stroke,
 	.HomeIcon_svg__icon-stroke {

@@ -8,8 +8,10 @@
 					v-model="formEmail"
 					class="emailInput"
 					:class="{
-						highlight: isEmailInvalid(),
+						highlight: isEmailInvalid() && !focusEmail,
 					}"
+					@focus="focusEmail = true"
+					@blur="focusEmail = false"
 					type="email"
 					name="_replyto"
 					placeholder="*Your Email"
@@ -90,6 +92,7 @@ export default {
 			letter: '',
 			index: 0,
 			loading: false,
+			focusEmail: false,
 		}
 	},
 	mounted() {
@@ -147,7 +150,7 @@ export default {
 
 		afterSending() {
 			setTimeout(() => {
-				this.$refs.title.style.color = '#00a1ff'
+				this.$refs.title.style.color = '#34f8b1'
 				this.writingEffect(this.title, this.$refs.title)
 				this.success = false
 				this.error = false
@@ -215,6 +218,11 @@ export default {
 @import '~assets/scss/_colors';
 $higlight-color: #fe006a;
 
+// $contactColor: #f8079e;
+// $contactColorDarker: #a00e69;
+$contactColor: #34f8b1; // zelena
+$contactColorDarker: #24956c; // zelena
+
 .highlight {
 	outline: none !important;
 	box-shadow: $higlight-color 0px 0.4em, $higlight-color 0px -0.4em,
@@ -237,7 +245,7 @@ $higlight-color: #fe006a;
 }
 
 .contact-title {
-	color: #00a1ff;
+	color: $contactColor;
 	font-weight: normal;
 	font-size: 2.1em;
 	margin-bottom: 0.7rem;
@@ -248,7 +256,7 @@ $higlight-color: #fe006a;
 	position: absolute;
 	width: 3px;
 	height: 1em;
-	border-right: 4px solid #00a1ff;
+	border-right: 4px solid $contactColor;
 	opacity: 0;
 	animation: cursorAtEnd 1s steps(2, jump-none) infinite;
 }
@@ -276,7 +284,7 @@ form {
 			left: 0;
 			width: 0%;
 			height: 3px;
-			background: #0fd7d7;
+			background: $contactColor;
 			transition: width 0.5s ease;
 		}
 	}
@@ -287,7 +295,7 @@ form {
 	input,
 	textarea {
 		position: relative;
-		color: $main-color;
+		color: #fff;
 		background: #0e031b;
 		display: block;
 		width: 100%;
@@ -295,7 +303,7 @@ form {
 		padding: 0.8rem 0.5rem;
 
 		&:focus {
-			outline: 2px solid;
+			outline: 2px solid $contactColor;
 		}
 
 		&:focus + .field-border {
@@ -322,9 +330,9 @@ form {
 		font-family: inherit;
 		font-size: 0.7em;
 		text-transform: uppercase;
-		background: #00a1ff;
+		background: $contactColor;
 		color: #11001b;
-		border: 2px solid #00e5ff;
+		border: 2px solid $contactColor;
 		padding: 0.5rem 0.6rem;
 		border-radius: 0.2rem;
 		cursor: pointer;
@@ -336,7 +344,7 @@ form {
 		}
 
 		.btn-half-bg {
-			background: #0088cc;
+			background: $contactColorDarker;
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -371,7 +379,7 @@ form {
 		font-family: 'Press Start 2P', cursive;
 		font-weight: normal;
 		font-size: 0.7em;
-		color: #7e1cef6b;
+		color: #7e1cefb7;
 	}
 
 	textarea {
