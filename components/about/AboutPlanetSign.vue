@@ -3,11 +3,8 @@
 		<div v-if="!closed" class="sign">
 			<div class="bar">
 				<div class="exit" @click="closed = true">
-					<<<<<<< HEAD
 					<span><i class="fas fa-times"></i></span>
-					=======
 					<span>x</span>
-					>>>>>>> f54574c8d728fb5b8d830d1fe1671f9068f40ee5
 				</div>
 			</div>
 			<div class="heart">
