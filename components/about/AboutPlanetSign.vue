@@ -4,7 +4,7 @@
 			<div class="bar">
 				<div class="exit" @click="closed = true">
 					<span><i class="fas fa-times"></i></span>
-					<span>x</span>
+					<!-- <span>x</span> -->
 				</div>
 			</div>
 			<div class="heart">
