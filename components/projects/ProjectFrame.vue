@@ -27,9 +27,14 @@ export default {}
 	.selected-frame {
 		height: 400px;
 	}
+	.projectShowcase .selected-frame {
+		width: 300px;
+		left: -40px;
+	}
 }
 @media (max-width: 620px) {
 	.projectShowcase .selected-frame {
+		width: 400px;
 		left: 50%;
 		top: 32%;
 	}

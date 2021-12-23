@@ -461,7 +461,7 @@ export default {
 		justify-content: flex-start;
 		height: auto;
 		padding-top: 5rem;
-		padding-bottom: 10rem;
+		padding-bottom: 16rem;
 
 		.projects {
 			height: auto;
@@ -476,11 +476,11 @@ export default {
 		padding-bottom: 4rem;
 	}
 }
-@media (max-width: 620px) and (max-height: 830px) {
-	.projectShowcase {
-		padding-bottom: 10rem;
-	}
-}
+// @media (max-width: 620px) and (max-height: 830px) {
+// 	.projectShowcase {
+// 		padding-bottom: 10rem;
+// 	}
+// }
 
 @media (max-width: 440px) {
 	.projects {

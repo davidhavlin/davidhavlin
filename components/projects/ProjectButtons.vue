@@ -46,4 +46,9 @@ export default {
 	animation: fadeInUp;
 	animation-duration: 1s;
 }
+@media (max-width: 620px) {
+	.projectShowcase .close-btn {
+		display: none;
+	}
+}
 </style>

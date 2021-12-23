@@ -30,17 +30,22 @@
 		<div class="project-gh showcase-content">
 			<h4 :style="{ color: project.color.titles }">github</h4>
 			<a
-				:href="project.github"
 				:style="{ color: '#fff', display: 'flex' }"
+				:href="project.github"
 				target="new_blank"
+				:class="{ 'github-private': !project.github }"
+				@click="clickHref(project.github, $event)"
 			>
 				<img
 					class="github-icon"
 					:src="require('@/assets/images/software/github.png')"
 					alt="github"
 				/>
-				{{ project.github ? 'Github page' : '-' }}
+				{{ project.github ? 'Github page' : 'private' }}
 			</a>
+		</div>
+		<div class="mobile-close" :style="{ borderColor: project.color.main }">
+			close
 		</div>
 	</div>
 </template>
@@ -63,6 +68,9 @@ export default {
 		},
 	},
 	methods: {
+		clickHref(link, e) {
+			if (!link) e.stopPropagation()
+		},
 		makeIcon(tech) {
 			switch (tech) {
 				case 'HTML':
@@ -74,14 +82,35 @@ export default {
 				case 'ES6':
 					return require('@/assets/images/software/js.png')
 
+				case 'TS':
+					return require('@/assets/images/software/typescript.png')
+
 				case 'Vue':
 					return require('@/assets/images/software/vue.png')
+
+				case 'Vuex':
+					return require('@/assets/images/software/vuex.png')
 
 				case 'Nuxt':
 					return require('@/assets/images/software/nuxt.png')
 
+				case 'Quasar':
+					return require('@/assets/images/software/quasar.png')
+
 				case 'React':
 					return require('@/assets/images/software/react.png')
+
+				case 'Node':
+					return require('@/assets/images/software/node.png')
+
+				case 'Express':
+					return require('@/assets/images/software/express.png')
+
+				case 'Postgres':
+					return require('@/assets/images/software/postgres.png')
+
+				case 'Prisma':
+					return require('@/assets/images/software/prisma.png')
 			}
 		},
 		shortUrl(url) {
@@ -128,11 +157,13 @@ export default {
 		.project-gh {
 			animation: slideIn 0.5s forwards ease;
 			opacity: 0;
+			max-width: 300px;
 		}
 		.project-info {
 			margin-top: 3rem;
 			color: #fff;
 			animation-delay: 0.5s;
+			min-width: 250px;
 		}
 		.project-url {
 			color: #d3015e;
@@ -143,6 +174,12 @@ export default {
 		}
 		.project-gh {
 			animation-delay: 1.1s;
+
+			.github-private {
+				color: red;
+				cursor: not-allowed;
+				// pointer-events: none;
+			}
 		}
 
 		@keyframes slideIn {
@@ -166,9 +203,9 @@ export default {
 			}
 			.icon-tooltip {
 				visibility: hidden;
-				width: 50px;
+				min-width: 50px;
 				left: 50%;
-				margin-left: -25px;
+				transform: translateX(-50%);
 				background-color: #fff;
 				color: #000;
 				text-align: center;
@@ -248,6 +285,29 @@ export default {
 			padding: 0.6rem;
 			margin-bottom: 1.2rem;
 			font-size: 0.9em;
+		}
+	}
+}
+.mobile-close {
+	display: none;
+	@media (max-width: 620px) {
+		width: 100%;
+		height: 50px;
+		color: red;
+		background: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-family: 'Press Start 2P', cursive;
+		font-size: 0.7em;
+		text-transform: uppercase;
+		background: #0c0110;
+		color: #ffffff;
+		border: 2px solid #17032e;
+		cursor: pointer;
+
+		&:hover {
+			border-color: #00f3ff !important;
 		}
 	}
 }

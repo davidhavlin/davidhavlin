@@ -202,6 +202,15 @@ export default {
 	}
 	.project {
 		width: 400px;
+
+		@media (max-width: 800px) {
+			width: 300px;
+			margin-left: -100px;
+		}
+		@media (max-width: 620px) {
+			width: 400px;
+			margin-left: unset;
+		}
 	}
 	.project:hover {
 		outline: 3px solid #00f3ff;
