@@ -68,8 +68,9 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: #1a0536;
 	height: 100%;
+	// background: #1a0536;
+	background: transparent;
 	// width: 4.4rem;
 	width: 80px;
 	pointer-events: all;
@@ -86,12 +87,18 @@ export default {
 		margin-bottom: 14px;
 
 		svg {
-			width: 39px;
+			width: 37px;
 			height: auto;
 		}
 	}
+	.home-icon svg {
+		width: 32px;
+	}
 	.contact-icon svg {
-		width: 35px;
+		width: 30px;
+	}
+	.projects-icon svg {
+		width: 32px;
 	}
 	.link:last-child {
 		margin-bottom: 0;
@@ -101,10 +108,14 @@ export default {
 		font-family: 'Press Start 2P', cursive;
 		font-size: 12px;
 		text-transform: uppercase;
-		color: #0af0f0;
+		color: #fff;
 		padding-top: 0.2rem;
 		opacity: 0;
 		transform: scale(0.7);
+
+		@media (max-width: 800px) {
+			display: none;
+		}
 	}
 }
 
@@ -129,7 +140,7 @@ export default {
 // ------- AKTIV KLASSA
 .nuxt-link-exact-active {
 	.link-name {
-		color: #0af0f0;
+		color: #fff;
 		opacity: 1;
 	}
 }
@@ -140,7 +151,7 @@ export default {
 	.link:focus {
 		.link-name {
 			// color: #34f8b1;
-			color: #0af0f0;
+			color: #fff;
 			opacity: 1;
 		}
 	}

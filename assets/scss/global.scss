@@ -28,6 +28,7 @@
 
 	--highlight-color: #0af0f0;
 	--highlight-color2: #34f8b1;
+	--highlight-color3: #fff;
 	/*-------------------- //// ------------------------*/
 }
 
@@ -35,7 +36,7 @@
 .contact-icon:hover,
 .nuxt-link-exact-active {
 	.ContactIcon_svg__contact-stroke {
-		stroke: var(--highlight-color);
+		stroke: var(--highlight-color3);
 	}
 }
 
@@ -45,10 +46,10 @@
 	.ContactIcon_svg__icon-stroke,
 	.ProjectsIcon_svg__icon-stroke,
 	.HomeIcon_svg__icon-stroke {
-		stroke: var(--highlight-color);
+		stroke: var(--highlight-color3);
 	}
 	.AboutIcon_svg__icon-about-stroke {
-		fill: var(--highlight-color);
+		fill: var(--highlight-color3);
 	}
 }
 @media (hover: none) {

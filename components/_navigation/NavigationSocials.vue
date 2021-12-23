@@ -139,10 +139,10 @@ export default {
 		font-family: 'Press Start 2P', cursive;
 		font-size: 12px;
 		position: absolute;
-		top: -10px;
+		top: -7px;
 		left: 20px;
 		background: #d90d3a;
-		padding: 2px 4px;
+		padding: 2px;
 		border-radius: 3px;
 		box-sizing: content-box;
 		z-index: 1;
@@ -150,6 +150,8 @@ export default {
 
 		span {
 			transform: scale(0.9);
+			display: block;
+			margin-bottom: -1px;
 		}
 	}
 
@@ -221,18 +223,18 @@ export default {
 	}
 
 	.facebookIn {
-		transform: translate(21px, -137px) scale(1);
+		transform: translate(19px, -130px) scale(1);
 	}
 	.twitterIn {
-		transform: translate(66px, -124px) scale(1);
+		transform: translate(60px, -113px) scale(1);
 		transition-delay: 100ms;
 	}
 	.youtubeIn {
-		transform: translate(102px, -89px) scale(1);
+		transform: translate(90px, -78px) scale(1);
 		transition-delay: 200ms;
 	}
 	.githubIn {
-		transform: translate(115px, -47px) scale(1);
+		transform: translate(97px, -39px) scale(1);
 		transition-delay: 300ms;
 	}
 }

@@ -75,6 +75,7 @@ export default {
 	},
 	mounted() {
 		this.cloneElements()
+		this.hideClones()
 		this.onMountedStyles()
 		this.selected = this.projects[this.counter + 1]
 
@@ -92,6 +93,19 @@ export default {
 				this.size = 210
 				this.containerTransform()
 			}
+		},
+		hideClones() {
+			const elements = document.querySelectorAll('.clone')
+			// po animacii vymazat classu s animaciou, bez tohto tam bol divny preblik
+			// animacia je tam kvoli loadnuti klonov na zaciatku, bez toho tam bol vizualny glitch
+			elements.forEach(
+				(el) => {
+					el.addEventListener('animationend', () => {
+						el.classList.remove('clone')
+					})
+				},
+				{ once: true }
+			)
 		},
 		afterCarouselMove() {
 			if (!event.target.classList.contains('project-boxes')) return
@@ -268,12 +282,15 @@ export default {
 
 		cloneElements() {
 			// klonujem projekty aby carousel fungoval donekonecna, ked bude viac projektov najde sa ine riesenie
-			const lastchild = this.container.lastChild
 			const firstchild = this.container.firstChild
-			const clonedLastBox = lastchild.cloneNode(true)
-			const clonedLastPrevBox = lastchild.previousSibling.cloneNode(true)
+			const lastchild = this.container.lastChild
 			const clonedFirstBox = firstchild.cloneNode(true)
 			const clonedFirstNextBox = firstchild.nextSibling.cloneNode(true)
+			const clonedLastBox = lastchild.cloneNode(true)
+			const clonedLastPrevBox = lastchild.previousSibling.cloneNode(true)
+			clonedFirstBox.classList.add('clone')
+			clonedFirstNextBox.classList.add('clone')
+			clonedLastBox.classList.add('clone')
 			clonedLastPrevBox.classList.add('clone', 'clone-prev')
 
 			this.container.prepend(clonedLastBox)
@@ -348,7 +365,19 @@ export default {
 	padding-left: 0.5rem;
 
 	.ProjectBox {
+		position: relative;
 		margin-right: 90px;
+	}
+
+	.clone {
+		opacity: 0;
+		animation: fadeInLater 0.3s forwards ease;
+		animation-delay: 1600ms;
+	}
+	@keyframes fadeInLater {
+		to {
+			opacity: 1;
+		}
 	}
 
 	#box-0,
@@ -465,6 +494,9 @@ export default {
 			background: #140527e0;
 			z-index: 10;
 			pointer-events: none;
+		}
+		.ProjectBox.selected::after {
+			content: '';
 		}
 	}
 }
