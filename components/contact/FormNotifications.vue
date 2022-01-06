@@ -48,6 +48,7 @@ export default {
 .success,
 .alert,
 .error {
+	text-align: center;
 	font-family: 'IBM Plex Mono', monospace;
 	font-size: 0.8em;
 	position: fixed;

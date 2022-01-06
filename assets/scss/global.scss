@@ -40,28 +40,45 @@
 	}
 }
 
+.ContactIcon_svg__icon-stroke,
+.ProjectsIcon_svg__icon-stroke,
+.HomeIcon_svg__icon-stroke,
+.AboutIcon_svg__icon-about-stroke {
+	stroke: transparent;
+}
+
 .link:hover,
-.link:focus,
+.link:focus {
+	.ContactIcon_svg__icon-stroke,
+	.ProjectsIcon_svg__icon-stroke,
+	.HomeIcon_svg__icon-stroke,
+	.AboutIcon_svg__icon-about-stroke {
+		stroke: var(--highlight-color3);
+	}
+}
 .nuxt-link-exact-active {
 	.ContactIcon_svg__icon-stroke,
 	.ProjectsIcon_svg__icon-stroke,
-	.HomeIcon_svg__icon-stroke {
-		stroke: var(--highlight-color3);
-	}
+	.HomeIcon_svg__icon-stroke,
 	.AboutIcon_svg__icon-about-stroke {
-		fill: var(--highlight-color3);
+		// stroke: #df1041;
+		stroke: #5900ff;
 	}
 }
-@media (hover: none) {
-	.link:hover,
-	.link:focus {
-		.ContactIcon_svg__icon-stroke,
-		.ProjectsIcon_svg__icon-stroke,
-		.HomeIcon_svg__icon-stroke {
-			stroke: var(--navbar-color);
-		}
-		.AboutIcon_svg__icon-about-stroke {
-			fill: var(--navbar-color);
-		}
-	}
+// @media (hover: none) {
+// 	.link:hover,
+// 	.link:focus {
+// 		.ContactIcon_svg__icon-stroke,
+// 		.ProjectsIcon_svg__icon-stroke,
+// 		.HomeIcon_svg__icon-stroke {
+// 			stroke: var(--navbar-color);
+// 		}
+// 		.AboutIcon_svg__icon-about-stroke {
+// 			fill: var(--navbar-color);
+// 		}
+// 	}
+// }
+
+.d-mt-md {
+	margin-top: 16px;
 }

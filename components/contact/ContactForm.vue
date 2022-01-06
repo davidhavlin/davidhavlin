@@ -10,11 +10,11 @@
 					:class="{
 						highlight: isEmailInvalid() && !focusEmail,
 					}"
-					@focus="focusEmail = true"
-					@blur="focusEmail = false"
 					type="email"
 					name="_replyto"
 					placeholder="*Your Email"
+					@focus="focusEmail = true"
+					@blur="focusEmail = false"
 				/>
 				<div class="field-border"></div>
 			</div>
@@ -220,8 +220,8 @@ $higlight-color: #fe006a;
 
 // $contactColor: #f8079e;
 // $contactColorDarker: #a00e69;
-$contactColor: #34f8b1; // zelena
-$contactColorDarker: #24956c; // zelena
+$contactColor: #ffb600; // zelena
+$contactColorDarker: #cb7601; // zelena
 
 .highlight {
 	outline: none !important;

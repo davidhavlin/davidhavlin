@@ -38,14 +38,15 @@ export default {
 	top: 50%;
 	transform: translateY(-50%);
 	cursor: pointer;
+	pointer-events: initial;
 
 	.info {
 		position: absolute;
 		font-family: 'Press Start 2P', cursive;
 		top: 39px;
 		left: -155px;
-		// color: #34f8b1;
-		color: #32a2e6;
+		color: #fff;
+		// color: #32a2e6;
 		font-size: 13px;
 		animation: right 2s infinite;
 	}
@@ -67,8 +68,8 @@ export default {
 	&:hover,
 	&:focus {
 		path {
-			// stroke: #34b1f8;
-			stroke: #34f8b1;
+			stroke: #00c7ff;
+			// stroke: #34f8b1;
 		}
 	}
 }

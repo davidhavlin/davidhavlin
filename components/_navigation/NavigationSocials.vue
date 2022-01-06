@@ -251,11 +251,11 @@ export default {
 		.box,
 		.open-box,
 		.open-empty-box {
-			background: #44179c;
+			// background: #44179c;
 			padding: 0.4rem;
 			border-radius: 50%;
-			border: 4px solid #6623ea;
-			box-shadow: -1px 1px 8px 1px #0b020f6e;
+			border: 4px solid transparent;
+			// box-shadow: -1px 1px 8px 1px #0b020f6e;
 		}
 		.box-title {
 			display: none;

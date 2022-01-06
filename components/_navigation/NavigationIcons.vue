@@ -31,6 +31,15 @@
 				<div class="link-name">Contact</div>
 			</nuxt-link>
 		</div>
+
+		<!-- ***********    Blogs link  ****************** -->
+		<div class="link contact-icon" :class="{ disabled: loading }">
+			<nuxt-link to="/contact">
+				<!-- <ContactIcon /> -->
+				<div># BLOGS</div>
+				<div class="link-name">#Blogs</div>
+			</nuxt-link>
+		</div>
 	</div>
 </template>
 
@@ -165,7 +174,7 @@ export default {
 @media (max-width: 800px) {
 	.navigation-links {
 		flex-direction: row;
-		background: var(--navbar-color);
+		// background: var(--navbar-color);
 
 		width: 100%;
 		height: 80px;

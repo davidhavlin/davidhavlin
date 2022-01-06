@@ -73,6 +73,7 @@
 </template>
 
 <script>
+// const galaxy = [{ name: 'html', icon: '', subPlanets: [] }] // TODO rework
 export default {
 	props: {
 		nextPage: {
@@ -313,7 +314,7 @@ export default {
 
 @media (max-width: 600px) {
 	.sun {
-		transform: scale(0.8);
+		transform: scale(0.7);
 	}
 }
 </style>

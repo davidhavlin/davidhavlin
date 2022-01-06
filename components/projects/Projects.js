@@ -1,6 +1,29 @@
 // prettier-ignore
 const myProjects = [
 	{
+		title: 'David Havlín Website',
+		url: 'https://davidhavlin.com/',
+		desc:
+			'Moja osobná portfolio stránka ktorú som sa pokúsil spraviť trošku netradične.',
+		logo: require('@/assets/images/projects/dh-logo.png'),
+		github: 'https://github.com/davidhavlin/dhavlin.github.io',
+		color: {
+			main: '#3f0c8d',
+			second: '#e9093e',
+			title: '#00f3ff',
+			titles: '#0089ff',
+			url: '#81ffff',
+		},
+		stack: ['HTML', 'SCSS', 'ES6', 'Vue', 'Nuxt'],
+		bg: require('@/assets/images/projects/dh-bg.webp'),
+		images: [
+			require('@/assets/images/projects/dh01.webp'),
+			require('@/assets/images/projects/dh02.webp'),
+			require('@/assets/images/projects/dh-mob.webp'),
+		],
+		id: 0,
+	},
+	{
 		title: 'SHOW ME CODE',
 		url: 'https://app-showmecode.herokuapp.com/',
 		desc:
@@ -30,29 +53,6 @@ const myProjects = [
 			require('@/assets/images/projects/smc-01.png'),
 			require('@/assets/images/projects/smc-02.png'),
 			require('@/assets/images/projects/smc-03.png'),
-		],
-		id: 0,
-	},
-	{
-		title: 'David Havlín Website',
-		url: 'https://davidhavlin.com/',
-		desc:
-			'Moja osobná portfolio stránka ktorú som sa pokúsil spraviť trošku netradične.',
-		logo: require('@/assets/images/projects/dh-logo.png'),
-		github: 'https://github.com/davidhavlin/dhavlin.github.io',
-		color: {
-			main: '#3f0c8d',
-			second: '#e9093e',
-			title: '#00f3ff',
-			titles: '#0089ff',
-			url: '#81ffff',
-		},
-		stack: ['HTML', 'SCSS', 'ES6', 'Vue', 'Nuxt'],
-		bg: require('@/assets/images/projects/dh-bg.webp'),
-		images: [
-			require('@/assets/images/projects/dh01.webp'),
-			require('@/assets/images/projects/dh02.webp'),
-			require('@/assets/images/projects/dh-mob.webp'),
 		],
 		id: 1,
 	},

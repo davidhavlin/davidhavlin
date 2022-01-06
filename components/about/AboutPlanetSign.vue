@@ -1,10 +1,19 @@
 <template>
-	<div>
-		<div v-if="!closed" class="sign">
-			<div class="bar">
+	<div ref="wrapper" class="wrapper">
+		<div
+			v-if="!closed"
+			ref="sign"
+			class="sign"
+			:class="{ dragging: dragging }"
+			:style="{ top: elTop, left: elLeft }"
+		>
+			<div
+				class="bar"
+				@mousedown.prevent="onDragStart"
+				@touchstart.prevent="onDragStart"
+			>
 				<div class="exit" @click="closed = true">
 					<span><i class="fas fa-times"></i></span>
-					<!-- <span>x</span> -->
 				</div>
 			</div>
 			<div class="heart">
@@ -24,19 +33,37 @@
 					/>
 				</svg>
 			</div>
-			<p>Give me Like</p>
+			<p>Click</p>
 			<button @click.prevent="magicStars">ok</button>
 		</div>
-		<div class="stick"></div>
 	</div>
 </template>
 
 <script>
+const SIGN_SIZE = 130
+const EL_TOP = '60%'
+const EL_LEFT = '30%'
 export default {
 	data() {
 		return {
 			closed: false,
+			posX: 0,
+			posY: 0,
+			elTop: EL_TOP,
+			elLeft: EL_LEFT,
+			dragging: false,
+			targetEl: null,
+			wrapper: null,
 		}
+	},
+	mounted() {
+		window.addEventListener(
+			'resize',
+			this.debounce(this.onWrapperResize, 200)
+		)
+	},
+	destroyed() {
+		window.removeEventListener('resize', this.onWrapperResize)
 	},
 	methods: {
 		magicStars() {
@@ -51,13 +78,102 @@ export default {
 
 			this.$store.commit('runMagicStars')
 		},
+
+		onDragStart(e) {
+			this.dragging = true
+			this.targetEl = this.$refs.sign
+			this.wrapper = this.targetEl.parentElement.getBoundingClientRect()
+			if (e.type === 'touchstart') {
+				this.posX = e.touches[0].clientX
+				this.posY = e.touches[0].clientY
+				document.addEventListener('touchmove', this.onDragMove)
+				document.addEventListener('touchend', this.onDragEnd)
+			} else {
+				this.posX = e.clientX
+				this.posY = e.clientY
+				document.addEventListener('mousemove', this.onDragMove)
+				document.addEventListener('mouseup', this.onDragEnd)
+			}
+		},
+		onDragMove(e) {
+			const clientX =
+				e.type === 'touchmove' ? e.touches[0].clientX : e.clientX
+			const clienyY =
+				e.type === 'touchmove' ? e.touches[0].clientY : e.clientY
+			// ako daleko sa pohla mys
+			const x = clientX - this.posX
+			const y = clienyY - this.posY
+
+			const top = this.targetEl.offsetTop + y
+			const left = this.targetEl.offsetLeft + x
+
+			// nastavit poziciu elementu
+			this.elTop = this.checkIfOnEdge(top, 'y') + 'px'
+			this.elLeft = this.checkIfOnEdge(left, 'x') + 'px'
+
+			// znovu priradit poziciu mysi
+			this.posX = clientX
+			this.posY = clienyY
+		},
+		onDragEnd(e) {
+			this.dragging = false
+			this.targetEl = null
+			if (e.type === 'touchend') {
+				document.removeEventListener('touchmove', this.onTouchMove)
+				document.removeEventListener('touchend', this.onTouchEnd)
+			} else {
+				document.removeEventListener('mousemove', this.onDragMove)
+				document.removeEventListener('mouseup', this.onDragEnd)
+			}
+		},
+		checkIfOnEdge(position, axis) {
+			if (axis === 'x') {
+				if (position <= 2) return 2
+				else if (position >= this.wrapper.width - SIGN_SIZE - 3)
+					return this.wrapper.width - SIGN_SIZE - 2
+				else return position
+			}
+			if (axis === 'y') {
+				if (position <= 2) return 2
+				else if (position >= this.wrapper.height - SIGN_SIZE - 3)
+					return this.wrapper.height - SIGN_SIZE - 2
+				else return position
+			}
+		},
+		onWrapperResize() {
+			this.elTop = EL_TOP
+			this.elLeft = EL_LEFT
+		},
+		debounce(cbFunc, delay = 250) {
+			let timeoutId
+			return (...args) => {
+				clearTimeout(timeoutId)
+				timeoutId = setTimeout(() => {
+					timeoutId = null
+					cbFunc(...args)
+				}, delay)
+			}
+		},
 	},
 }
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000000000000;
+	pointer-events: none;
+}
 .sign {
+	// position: absolute;
+	position: relative;
+	pointer-events: initial;
 	width: 130px;
+	height: 130px;
 	background: #5903e2;
 	color: #57c5ff;
 	font-style: normal;
@@ -68,8 +184,14 @@ export default {
 	border-radius: 2px;
 	text-align: center;
 	cursor: default;
+	user-select: none;
+
+	&.dragging {
+		outline: 2px solid white;
+	}
 
 	.bar {
+		cursor: move;
 		width: 100%;
 		height: 15px;
 		background: #390779;
@@ -88,13 +210,6 @@ export default {
 			background: #e203ae;
 			cursor: pointer;
 			font-size: 13px;
-
-			// span {
-			// 	display: block;
-			// 	position: absolute;
-			// 	font-weight: 700;
-			// 	height: 18px;
-			// }
 		}
 	}
 	.heart {
@@ -122,29 +237,17 @@ export default {
 		margin-bottom: 0.5rem;
 		color: #fff;
 		background: #390779;
-		padding: 0.1rem 0.7rem;
-		border: 1px solid #390779;
+		padding: 0.2rem 1rem;
+		border: none;
+		border-radius: 2px;
 		font-size: 12px;
 		font-weight: 600;
 		font-family: arial;
 		// text-transform: uppercase;
-		&:focus {
-			outline: none;
-		}
 		&:hover {
-			border: 1px solid #00ddff;
+			outline: 2px solid #fff;
 			color: #fff;
 		}
 	}
-}
-.stick {
-	display: none;
-	position: absolute;
-	width: 7px;
-	height: 150px;
-	background: #390779;
-	left: 48%;
-	bottom: -100px;
-	z-index: -1;
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
 	<div class="page-about-container">
 		<AboutMe :next-page="nextPage" />
+		<AboutPlanetSign class="little-star" :class="{ reveal: clickSign }" />
+
 		<main ref="main">
 			<section class="about-section">
 				<AboutRightArrow
@@ -9,8 +11,8 @@
 					@click.native="handleClickNext"
 				/>
 				<div class="fog"></div>
-				<div class="planet" :class="{ planetMove: nextPage }">
-					<AboutPlanetSign class="planet-sign" />
+				<div class="movable-wrapper" :class="{ planetMove: nextPage }">
+					<!-- <AboutPlanetSign /> -->
 					<!-- <PlanetBig class="planet1" /> -->
 					<Planet class="planet2" />
 				</div>
@@ -38,12 +40,17 @@ export default {
 		return {
 			nextPage: false,
 			infoSign: true,
+			clickSign: false,
 		}
 	},
 	mounted() {
 		if (this.$route.params.skillsPage) {
 			setTimeout(() => {
 				this.handleClickNext()
+			}, 1000)
+		} else {
+			setTimeout(() => {
+				this.clickSign = true
 			}, 1000)
 		}
 	},
@@ -58,12 +65,15 @@ export default {
 			this.$refs.main.style.transform = 'translateX(-100%)'
 			this.nextPage = true
 			this.infoSign = false
+			this.clickSign = false
 			document.title = 'Skills'
 			this.$store.commit('movingStars', this.nextPage)
 		},
 		handleClickPrev() {
 			this.$refs.main.style.transform = 'translateX(0)'
 			this.nextPage = false
+			this.clickSign = true
+
 			document.title = 'About me'
 			this.$store.commit('movingStars', this.nextPage)
 		},
@@ -86,13 +96,27 @@ export default {
 	color: #fff;
 	background: var(--main-bg-color);
 	overflow: hidden;
+	// pointer-events: none;
 }
+.little-star {
+	transform: scale(0.01);
+	transition: all 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	left: 40% !important;
+	top: 30% !important;
+}
+.reveal {
+	transform: scale(1);
+	left: 0 !important;
+	top: 0 !important;
+}
+
 main {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	display: flex;
 	transition: all 1s ease;
+	pointer-events: none;
 }
 section {
 	position: absolute;
@@ -121,21 +145,14 @@ section {
 		transform: translateX(-700px);
 	}
 }
-.planet {
+.movable-wrapper {
+	pointer-events: none;
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	z-index: -3;
 	transition: transform 1s ease;
 
-	.planet1 {
-		position: absolute;
-		bottom: 4px;
-		width: 284px;
-		height: auto;
-		left: 2%;
-		opacity: 0.2;
-	}
 	.planet2 {
 		position: absolute;
 		top: 100px;
@@ -143,12 +160,6 @@ section {
 		width: 150px;
 		height: auto;
 		opacity: 0.3;
-	}
-	.planet-sign {
-		position: absolute;
-		right: 60%;
-		bottom: 230px;
-		z-index: 1;
 	}
 }
 .planetMove {
@@ -160,6 +171,7 @@ section {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	pointer-events: none;
 }
 .skill-section {
 	left: 100%;

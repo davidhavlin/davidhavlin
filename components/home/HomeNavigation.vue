@@ -1,22 +1,19 @@
 <template>
 	<nav class="home-navigation">
-		<nuxt-link :to="{ name: 'about', params: { skillsPage } }"
-			><div class="link-text">čo ovládam?</div>
-			<div class="link-bg"></div
-		></nuxt-link>
-		<nuxt-link to="/projects"
-			><div class="link-text">projekty</div>
-			<div class="link-bg"></div
-		></nuxt-link>
-		<nuxt-link to="/contact"
-			><div class="link-text">kontaktuj ma</div>
-			<div class="link-bg"></div
-		></nuxt-link>
+		<nuxt-link
+			v-for="link in navLinks"
+			:key="`link-${link.label}`"
+			:to="link.to"
+		>
+			<div class="link-text">{{ link.label }}</div>
+			<div class="link-bg"></div>
+		</nuxt-link>
 	</nav>
 </template>
 
 <script>
 export default {
+	name: 'HomeNavigation',
 	data() {
 		return {
 			skillsPage: true,
@@ -25,6 +22,25 @@ export default {
 	computed: {
 		links() {
 			return document.querySelectorAll('.home-navigation a')
+		},
+		navLinks() {
+			return [
+				{
+					label: 'čo ovládam?',
+					to: {
+						name: 'about',
+						params: { skillsPage: this.skillsPage },
+					},
+				},
+				{
+					label: 'projekty',
+					to: '/projects',
+				},
+				{
+					label: 'kontaktuj ma',
+					to: '/contact',
+				},
+			]
 		},
 	},
 	mounted() {

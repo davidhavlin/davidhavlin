@@ -66,10 +66,16 @@ export default {
 	mounted() {
 		this.wInnerWidth = window.innerWidth
 		this.wInnerHeight = window.innerHeight
+		this.fillStarsOnStart()
 		this.autoAddingStars()
 		window.addEventListener('resize', this.debounce(this.handleResize, 500))
 	},
 	methods: {
+		fillStarsOnStart() {
+			for (let i = 0; i < 50; i++) {
+				this.addStar()
+			}
+		},
 		debounce(cbFunc, delay = 250) {
 			let timeoutId
 			return (...args) => {
@@ -122,7 +128,7 @@ export default {
 		autoAddingStars() {
 			// if (!document.hasFocus()) return
 			this.timeout = setTimeout(() => {
-				if (this.stars.length === this.movement.length) {
+				if (this.stars.length >= this.movement.length) {
 					this.$store.commit('enoughStars', true)
 				}
 				if (this.stars.length >= 50) {

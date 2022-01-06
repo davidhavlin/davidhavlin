@@ -29,6 +29,7 @@ export default {}
 	top: 50%;
 	transform: translateY(-50%);
 	cursor: pointer;
+	pointer-events: initial;
 
 	svg {
 		width: 50px;
@@ -41,7 +42,7 @@ export default {}
 	&:hover,
 	&:focus {
 		path {
-			stroke: var(--highlight-color);
+			stroke: #fff;
 		}
 	}
 }
