@@ -4,6 +4,7 @@ export const state = () => ({
 	moveStars: false,
 	elTop: null,
 	elLeft: null,
+	blogs: [],
 })
 
 export const mutations = {
@@ -21,5 +22,22 @@ export const mutations = {
 	},
 	movingStars(state, bool) {
 		state.moveStars = bool
+	},
+	SET_BLOGS(state, blogs) {
+		state.blogs = blogs
+	},
+}
+
+export const actions = {
+	async fetchBlogs({ commit }) {
+		try {
+			const { data: res } = await this.$axios.get(
+				// 'https://api-showmecode.herokuapp.com'
+				'http://localhost:1337/post/lolol/posts'
+			)
+			commit('SET_BLOGS', res.data)
+		} catch (error) {
+			console.log(error)
+		}
 	},
 }

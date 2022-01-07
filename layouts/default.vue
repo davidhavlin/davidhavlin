@@ -17,7 +17,7 @@ export default {
 	},
 	watch: {
 		'$route.path'(newValue, oldValue) {
-			newValue === '/about' || newValue === '/contact'
+			;['/about', '/blogs', '/contact'].includes(newValue)
 				? (this.showStars = true)
 				: (this.showStars = false)
 
@@ -29,7 +29,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.$route.name === 'about' || this.$route.name === 'contact'
+		;['about', 'blogs', 'contact'].includes(this.$route.name)
 			? (this.showStars = true)
 			: (this.showStars = false)
 	},

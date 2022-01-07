@@ -7,8 +7,8 @@
 				<p v-show="!nextPage">
 					Vyučený grafik, ale vždy ma to viac ťahalo k programovaniu a
 					že som sa v tom našiel. <br />
-					Osoba s citom pre detail, fanúšik prírody, hier, seriálov a
-					kinematografie.
+					Osoba s citom pre detail, fanúšik prírody, hier, seriálov,
+					kinematografie a programovania!
 				</p>
 				<div v-show="nextPage" class="skill-content">
 					<div v-if="showMore">

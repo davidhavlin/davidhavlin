@@ -33,11 +33,11 @@
 		</div>
 
 		<!-- ***********    Blogs link  ****************** -->
-		<div class="link contact-icon" :class="{ disabled: loading }">
-			<nuxt-link to="/contact">
+		<div class="link blog-icon" :class="{ disabled: loading }">
+			<nuxt-link to="/blogs">
 				<!-- <ContactIcon /> -->
-				<div># BLOGS</div>
-				<div class="link-name">#Blogs</div>
+				<div class="hash">#</div>
+				<div class="link-name">Blogs</div>
 			</nuxt-link>
 		</div>
 	</div>
@@ -126,25 +126,14 @@ export default {
 			display: none;
 		}
 	}
+	.blog-icon .link-name {
+		opacity: 1;
+	}
+	.hash {
+		font-family: 'Press Start 2P', cursive;
+		color: #fff;
+	}
 }
-
-// .link-name::after {
-// 	content: '';
-// 	position: absolute;
-// 	width: 3px;
-// 	margin-top: -2px;
-// 	margin-left: 1px;
-// 	height: 1.1em;
-// 	border-right: 4px solid #34f8b1;
-// 	opacity: 0;
-// 	-webkit-animation: type 1s steps(2, jump-none) infinite;
-// 	animation: type 1s steps(2, jump-none) infinite;
-// }
-// @keyframes type {
-// 	to {
-// 		opacity: 100%;
-// 	}
-// }
 
 // ------- AKTIV KLASSA
 .nuxt-link-exact-active {
@@ -167,6 +156,15 @@ export default {
 	// pri hoverovani nech neblika to lomitko
 	.link:hover .link-name::after {
 		display: none;
+	}
+
+	.blog-icon:hover {
+		.link-name {
+			// text-decoration: underline;
+		}
+		.hash {
+			color: #ffb601;
+		}
 	}
 }
 
