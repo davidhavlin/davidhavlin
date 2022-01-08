@@ -3,14 +3,22 @@
 		<section class="title-wrapper">
 			<h1 class="page-title">Moje blogy</h1>
 		</section>
-		<section class="blogs-wrapper">
-			<div class="skuska"></div>
+		<section
+			v-if="blogs.length > 0"
+			class="blogs-wrapper"
+			:class="{ 'blogs-not-enough': blogs.length <= 2 }"
+		>
 			<div
 				v-for="blog in blogs"
 				:key="`blog-id-${blog.id}`"
 				class="blog-wrapper"
+				:style="{
+					animationDelay: `${randomNumber(15, 2)}00ms`,
+				}"
 			>
-				<div class="blog">
+				<!-- left: randomNumber() + '%',
+					top: randomNumber() + '%', -->
+				<div @click="goToBlog(blog.id)" class="blog">
 					<header>
 						<div class="blog-created">
 							{{ formatDate(blog.createdAt) }}
@@ -53,16 +61,24 @@
 				</div>
 			</div>
 		</section>
+		<section v-else>
+			<div class="blog-no-blogs">
+				Zatiaľ žiadne články...
+			</div>
+		</section>
+		<div v-if="blogs.length > 2" class="fade-wrapper"></div>
 	</div>
 </template>
 
 <script>
+const SHOWMECODE_URL = 'https://app-showmecode.herokuapp.com'
 export default {
 	name: 'Blogs',
 	computed: {
 		blogs() {
 			console.log(this.$store.state.blogs)
 			return this.$store.state.blogs
+			// return []
 		},
 	},
 	mounted() {
@@ -73,8 +89,23 @@ export default {
 			this.$store.dispatch('fetchBlogs')
 		},
 		formatDate(dateString) {
-			const options = { year: 'numeric', month: 'long', day: 'numeric' }
-			return new Date(dateString).toLocaleDateString(undefined, options)
+			const options = {
+				year: 'numeric',
+				month: 'numeric',
+				day: 'numeric',
+			}
+			const newDate = new Date(dateString).toLocaleDateString(
+				undefined,
+				options
+			)
+			return newDate.replaceAll('/', '.')
+		},
+		randomNumber(max = 90, min = -90) {
+			return Math.floor(Math.random() * (max - min) + min)
+		},
+		goToBlog(id) {
+			console.log('go to blog', id)
+			window.open(`${SHOWMECODE_URL}/post/${id}`, '_blank').focus()
 		},
 	},
 	head() {
@@ -94,14 +125,11 @@ export default {
 ::-webkit-scrollbar-thumb {
 	border-radius: 0px;
 	background-color: #371364;
-	// -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
-/* Track */
 ::-webkit-scrollbar-track {
 	background: #110420;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #ff007c;
 }
@@ -118,7 +146,6 @@ export default {
 	overflow-y: auto;
 	padding-left: 90px;
 	padding-bottom: 100px;
-	// pointer-events: none;
 }
 
 .page-title {
@@ -135,33 +162,52 @@ section.blogs-wrapper {
 	margin-top: 30px;
 	position: relative;
 	z-index: 10;
-
-	// &::after {
-	// 	content: '';
-	// 	position: absolute;
-	// 	width: 100%;
-	// 	height: 100%;
-	// 	background: linear-gradient(
-	// 		0deg,
-	// 		rgba(26, 32, 36, 1) 0%,
-	// 		rgba(26, 32, 36, 0) 50%
-	// 	);
-	// }
 }
 
-.skuska {
-	position: absolute;
+.fade-wrapper {
+	position: relative;
+	max-width: 658px;
 	width: 100%;
-	height: 100%;
-	background: linear-gradient(
-		0deg,
-		rgba(26, 32, 36, 1) 0%,
-		rgba(26, 32, 36, 0) 50%
-	);
+	height: 0px;
+	pointer-events: none;
+
+	@media (min-width: 800px) {
+		display: none;
+	}
+	@media (max-width: 650px) {
+		// max-width: 333px;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		background: linear-gradient(
+			0deg,
+			rgba(55, 19, 100, 1) 0%,
+			rgba(26, 32, 36, 0) 50%
+		);
+		height: 200px;
+		bottom: -20px;
+		z-index: 20;
+	}
 }
 
 .blog-wrapper {
-	width: 300px;
+	position: relative;
+	max-width: 300px;
+	width: 100%;
+	// transition: all 1s;
+	// background: transparent;
+	// transform: scale(0.01);
+	animation: skuska 2s cubic-bezier(0.6, 0.04, 0.98, 0.335) forwards;
+}
+@keyframes skuska {
+	to {
+		transform: scale(1);
+		top: 0;
+		left: 0;
+	}
 }
 .blog {
 	$borderColor: #371364;
@@ -176,11 +222,16 @@ section.blogs-wrapper {
 	background: #110420;
 	border: 2px solid $borderColor;
 	box-shadow: 0 4px 0 1px $borderColor, 0 1px 0 1px $borderColor;
+	font-family: monospace;
 	cursor: pointer;
 
 	&:hover {
 		border-color: $hoverColor;
 		box-shadow: 0 4px 0 1px $hoverColor, 0 1px 0 1px $hoverColor;
+
+		.blog-created {
+			color: $hoverColor;
+		}
 	}
 
 	header {
@@ -220,6 +271,7 @@ section.blogs-wrapper {
 
 	&-title {
 		font-size: 25px;
+		font-weight: 600;
 		color: #fff;
 		word-break: break-word;
 	}
@@ -253,6 +305,12 @@ section.blogs-wrapper {
 			padding: 5px 0.4em;
 		}
 	}
+
+	&-no-blogs {
+		color: #08e6f2;
+		margin-top: 50px;
+		font-family: monospace;
+	}
 }
 
 @media (max-width: 800px) {
@@ -262,7 +320,7 @@ section.blogs-wrapper {
 	section.title-wrapper {
 		margin-top: 80px;
 	}
-	section.blogs-wrapper {
+	section.blogs-wrapper:not(.blogs-not-enough) {
 		margin-bottom: -21px;
 		border-bottom: 2px solid #9a49ff;
 		overflow-y: scroll;
@@ -273,6 +331,8 @@ section.blogs-wrapper {
 @media (max-width: 650px) {
 	section.blogs-wrapper {
 		grid-template-columns: 1fr;
+		justify-items: center;
+		width: 100%;
 	}
 }
 </style>

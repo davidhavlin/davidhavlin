@@ -40,6 +40,10 @@ export default {
 					label: 'kontaktuj ma',
 					to: '/contact',
 				},
+				{
+					label: 'moje blogy',
+					to: '/blogs',
+				},
 			]
 		},
 	},
@@ -104,6 +108,9 @@ export default {
 		}
 		&:nth-child(3) {
 			animation-delay: 900ms;
+		}
+
+		&:last-child {
 			margin-bottom: 0;
 		}
 

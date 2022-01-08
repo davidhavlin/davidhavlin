@@ -137,7 +137,7 @@ $bar-color: #46009e;
 
 .terminal {
 	font-family: 'VT323', monospace;
-	color: #210742;
+	color: #6637eb21;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -159,7 +159,7 @@ $bar-color: #46009e;
 	text-transform: uppercase;
 	font-size: 1.1rem;
 	font-weight: normal;
-	color: #34b1f8;
+	color: #ffffff;
 	display: block;
 	margin-bottom: 1rem;
 }

@@ -33,7 +33,8 @@ export const actions = {
 		try {
 			const { data: res } = await this.$axios.get(
 				// 'https://api-showmecode.herokuapp.com'
-				'http://localhost:1337/post/lolol/posts'
+				// 'http://localhost:1337/post/author/2/posts'
+				'http://localhost:1337/post/author/2/posts'
 			)
 			commit('SET_BLOGS', res.data)
 		} catch (error) {
