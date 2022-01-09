@@ -1,14 +1,29 @@
 <template>
-	<div class="page-about-container">
-		<AboutMe :next-page="nextPage" />
-		<AboutPlanetSign class="little-star" :class="{ reveal: clickSign }" />
+	<div
+		ref="container"
+		class="page-about-container"
+		@touchstart="onTouchStart"
+		@touchmove="onTouchMove"
+	>
+		<AboutMe
+			ref="boxes"
+			:next-page="nextPage"
+			:page-loading="pageLoading"
+			:sliding="sliding"
+		/>
+		<div class="sign-overflow">
+			<AboutPlanetSign
+				class="little-star"
+				:class="{ reveal: clickSign }"
+			/>
+		</div>
 
 		<main ref="main">
 			<section class="about-section">
 				<AboutRightArrow
 					v-show="!nextPage"
 					:info-sign="infoSign"
-					@click.native="handleClickNext"
+					@click.native="clickNext"
 				/>
 				<div class="fog"></div>
 				<div class="movable-wrapper" :class="{ planetMove: nextPage }">
@@ -18,10 +33,7 @@
 				</div>
 			</section>
 			<section class="skill-section">
-				<AboutLeftArrow
-					v-show="nextPage"
-					@click.native="handleClickPrev"
-				/>
+				<AboutLeftArrow v-show="nextPage" @click.native="clickPrev" />
 				<AboutSolarSystem :next-page="nextPage" />
 			</section>
 		</main>
@@ -30,32 +42,104 @@
 
 <script>
 import Planet from '~/assets/images/svg/Planet.svg'
-// import PlanetBig from '~/assets/images/svg/PlanetBig.svg'
 export default {
 	components: {
 		Planet,
-		// PlanetBig,
 	},
 	data() {
 		return {
+			pageLoading: undefined,
+			sliding: false,
 			nextPage: false,
 			infoSign: true,
 			clickSign: false,
+			xTouch: null,
+			yTouch: null,
 		}
 	},
 	mounted() {
+		this.$refs.container.addEventListener(
+			'animationstart',
+			this.onAnimationStart
+		)
+		this.$refs.container.addEventListener(
+			'animationend',
+			this.onAnimationEnd
+		)
+
+		this.$refs.main.addEventListener(
+			'transitionstart',
+			this.onTransitionStart
+		)
+		this.$refs.main.addEventListener('transitionend', this.onTransitionEnd)
+
+		window.addEventListener('resize', this.debounce(this.onResize, 400))
+
 		if (this.$route.params.skillsPage) {
 			setTimeout(() => {
-				this.handleClickNext()
+				this.clickNext()
 			}, 1000)
 		} else {
 			setTimeout(() => {
-				this.clickSign = true
+				if (!this.nextPage) {
+					this.clickSign = true
+				}
 			}, 1000)
 		}
 	},
+	beforeDestroy() {
+		this.$refs.container.removeEventListener(
+			'animationstart',
+			this.onAnimationStart
+		)
+		this.$refs.container.removeEventListener(
+			'animationend',
+			this.onAnimationEnd
+		)
+		this.$refs.main.removeEventListener(
+			'transitionstart',
+			this.onTransitionStart
+		)
+		this.$refs.main.removeEventListener(
+			'transitionend',
+			this.onTransitionEnd
+		)
+		window.removeEventListener('resize', this.debounce(this.onResize, 400))
+	},
 	methods: {
-		handleClickNext(e) {
+		onResize() {
+			const comp = this.$refs.boxes
+			comp.calculateSizes('ghostAbout')
+			comp.calculateSizes('ghostSkill')
+			comp.setSize(this.nextPage ? 'skillSize' : 'aboutSize')
+		},
+		debounce(cbFunc, delay = 250) {
+			let timeoutId
+			return (...args) => {
+				clearTimeout(timeoutId)
+				timeoutId = setTimeout(() => {
+					timeoutId = null
+					cbFunc(...args)
+				}, delay)
+			}
+		},
+		onTransitionStart(e) {
+			if (e.target !== this.$refs.main) return
+			this.sliding = true
+		},
+		onTransitionEnd(e) {
+			if (e.target !== this.$refs.main) return
+			this.sliding = false
+		},
+		onAnimationStart(e) {
+			if (e.animationName !== 'pageEnter') return
+			this.pageLoading = true
+		},
+		onAnimationEnd(e) {
+			if (e.animationName !== 'pageEnter') return
+			this.pageLoading = false
+		},
+		clickNext(e) {
 			if (e) {
 				if (e.target.className === 'exit') {
 					this.infoSign = false
@@ -69,13 +153,32 @@ export default {
 			document.title = 'Skills'
 			this.$store.commit('movingStars', this.nextPage)
 		},
-		handleClickPrev() {
+		clickPrev() {
 			this.$refs.main.style.transform = 'translateX(0)'
 			this.nextPage = false
 			this.clickSign = true
 
 			document.title = 'About me'
 			this.$store.commit('movingStars', this.nextPage)
+		},
+		onTouchStart(e) {
+			const firstTouch = e.touches[0]
+			this.xTouch = firstTouch.clientX
+			this.yTouch = firstTouch.clientY
+		},
+		onTouchMove(e) {
+			if (!this.xTouch || !this.yTouch) return
+
+			const xDiff = this.xTouch - e.touches[0].clientX
+			const yDiff = this.yTouch - e.touches[0].clientY
+
+			if (Math.abs(xDiff) > Math.abs(yDiff)) {
+				if (xDiff > 0) {
+					this.clickNext()
+				} else {
+					this.clickPrev()
+				}
+			}
 		},
 	},
 	head() {
@@ -96,7 +199,14 @@ export default {
 	color: #fff;
 	background: var(--main-bg-color);
 	overflow: hidden;
-	// pointer-events: none;
+}
+.sign-overflow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 .little-star {
 	transform: scale(0.01);

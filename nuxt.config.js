@@ -50,6 +50,7 @@ export default {
 	 */
 	plugins: [
 		'~/plugins/directives.js',
+		'~/plugins/route',
 		{ src: '~/plugins/vue-lazyload.js', mode: 'client' },
 	],
 	/*

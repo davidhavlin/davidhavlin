@@ -41,7 +41,7 @@
 
 <script>
 const SIGN_SIZE = 130
-const EL_TOP = '60%'
+const EL_TOP = '50%'
 const EL_LEFT = '30%'
 export default {
 	data() {

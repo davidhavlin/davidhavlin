@@ -5,19 +5,17 @@
 		</section>
 		<section
 			v-if="blogs.length > 0"
-			class="blogs-wrapper"
-			:class="{ 'blogs-not-enough': blogs.length <= 2 }"
+			class="blogs-wrapper something"
+			:class="{
+				'blogs-not-enough': blogs.length <= 2,
+				reveal: showBlogs,
+			}"
 		>
 			<div
 				v-for="blog in blogs"
 				:key="`blog-id-${blog.id}`"
 				class="blog-wrapper"
-				:style="{
-					animationDelay: `${randomNumber(15, 2)}00ms`,
-				}"
 			>
-				<!-- left: randomNumber() + '%',
-					top: randomNumber() + '%', -->
 				<div @click="goToBlog(blog.id)" class="blog">
 					<header>
 						<div class="blog-created">
@@ -74,15 +72,23 @@
 const SHOWMECODE_URL = 'https://app-showmecode.herokuapp.com'
 export default {
 	name: 'Blogs',
+	data() {
+		return {
+			showBlogs: false,
+		}
+	},
 	computed: {
 		blogs() {
 			console.log(this.$store.state.blogs)
-			return this.$store.state.blogs
+			return this.$store.state.blogs || []
 			// return []
 		},
 	},
 	mounted() {
 		this.fetchBlogs()
+		setTimeout(() => {
+			this.showBlogs = true
+		}, 1000)
 	},
 	methods: {
 		fetchBlogs() {
@@ -104,7 +110,6 @@ export default {
 			return Math.floor(Math.random() * (max - min) + min)
 		},
 		goToBlog(id) {
-			console.log('go to blog', id)
 			window.open(`${SHOWMECODE_URL}/post/${id}`, '_blank').focus()
 		},
 	},
@@ -219,15 +224,19 @@ section.blogs-wrapper {
 	padding: 15px;
 	width: 100%;
 	margin-top: 24px;
-	background: #110420;
-	border: 2px solid $borderColor;
-	box-shadow: 0 4px 0 1px $borderColor, 0 1px 0 1px $borderColor;
+	background: #1e073a;
+	// border: 2px solid $borderColor;
+	// box-shadow: 0 4px 0 1px $borderColor, 0 1px 0 1px $borderColor;
+	box-shadow: $borderColor 0px 5px, $borderColor 0px -5px,
+		$borderColor 5px 0px, $borderColor -5px 0px;
 	font-family: monospace;
 	cursor: pointer;
 
 	&:hover {
-		border-color: $hoverColor;
-		box-shadow: 0 4px 0 1px $hoverColor, 0 1px 0 1px $hoverColor;
+		// border-color: $hoverColor;
+		// box-shadow: 0 4px 0 1px $hoverColor, 0 1px 0 1px $hoverColor;
+		box-shadow: $hoverColor 0px 5px, $hoverColor 0px -5px,
+			$hoverColor 5px 0px, $hoverColor -5px 0px;
 
 		.blog-created {
 			color: $hoverColor;
@@ -311,6 +320,18 @@ section.blogs-wrapper {
 		margin-top: 50px;
 		font-family: monospace;
 	}
+}
+
+.something {
+	transform: scale(0.01);
+	transition: all 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	left: 40% !important;
+	top: 30% !important;
+}
+.reveal {
+	transform: scale(1);
+	left: 0 !important;
+	top: 0 !important;
 }
 
 @media (max-width: 800px) {

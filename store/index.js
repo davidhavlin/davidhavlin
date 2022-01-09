@@ -1,4 +1,5 @@
 export const state = () => ({
+	previousRoute: null,
 	isEnoughStars: false,
 	magicStars: false,
 	moveStars: false,
@@ -25,6 +26,9 @@ export const mutations = {
 	},
 	SET_BLOGS(state, blogs) {
 		state.blogs = blogs
+	},
+	SET_PREVIOUS_ROUTE(state, value) {
+		state.previousRoute = value
 	},
 }
 

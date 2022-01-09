@@ -22,9 +22,11 @@ export default {
 				: (this.showStars = false)
 
 			this.loading = true
+			console.log('PAGE LOADING START')
 			if (this.moveStars) this.moveStars = false
 			setTimeout(() => {
 				this.loading = false
+				console.log('PAGE LOADING END')
 			}, 2000)
 		},
 	},

@@ -1,40 +1,44 @@
 <template>
 	<div class="box-container" :class="{ 'skill-page': nextPage }">
-		<div ref="box" class="box-content">
-			<h2 v-show="!nextPage" class="about-title">About me</h2>
-			<h2 v-show="nextPage" class="skills-title">Skills</h2>
-			<div class="box-text">
-				<p v-show="!nextPage">
-					Vyučený grafik, ale vždy ma to viac ťahalo k programovaniu a
-					že som sa v tom našiel. <br />
-					Osoba s citom pre detail, fanúšik prírody, hier, seriálov,
-					kinematografie a programovania!
-				</p>
-				<div v-show="nextPage" class="skill-content">
-					<div v-if="showMore">
-						<p>
-							Zameriavam sa hlavne na
-							<strong>frontend</strong> development: <br />
-						</p>
-						<ul>
-							<li>HTML, CSS/Scss</li>
-							<li>JavaScript(ES6), TypeScript</li>
-							<li>Vue(Vue 3, Quasar, Nuxt.js, Vuex)</li>
-							<li>React(Redux, React native)</li>
-							<li>Git(GitHub, BitBucket)</li>
-						</ul>
-						<p class="d-mt-md">
-							Ale čoraz viac zabŕdam do
-							<strong>backendu</strong>:<br />
-						</p>
+		<div class="ghost-wrapper">
+			<div ref="ghostAbout" class="ghost-about ghost-text">
+				<SectionAbout />
+			</div>
+			<div ref="ghostSkill" class="ghost-about ghost-text">
+				<SectionSkill />
+			</div>
+		</div>
 
-						<ul>
-							<li>Node.js(Express.js, Adonis.js)</li>
-							<li>Postgresql, Prisma 2</li>
-							<li>Docker</li>
-						</ul>
-					</div>
-					<div v-else>...</div>
+		<div ref="box" class="box-content">
+			<transition name="title" mode="out-in">
+				<h2 v-if="!nextPage" key="about" class="about-title">
+					<!-- :class="[sliding ? 'nieco2' : 'nieco']" -->
+					About me
+				</h2>
+				<h2
+					v-else
+					key="skill"
+					:class="{ nieco: !sliding }"
+					class="skills-title"
+				>
+					Skills
+				</h2>
+			</transition>
+			<div
+				ref="boxContent"
+				class="box-text"
+				:class="{ sliding: sliding }"
+				:style="{ width: box.width, height: box.height }"
+			>
+				<div v-if="!nextPage">
+					<SectionAbout :transitioning="transitioning" />
+				</div>
+				<div v-else>
+					<SectionSkill
+						v-if="showMore"
+						:transitioning="transitioning"
+					/>
+					<div v-else class="dots">...</div>
 				</div>
 				<div
 					v-show="nextPage"
@@ -49,26 +53,147 @@
 </template>
 
 <script>
+import SectionAbout from './SectionAbout.vue'
+import SectionSkill from './SectionSkill.vue'
+const FRONTEND_ITEMS = [
+	'HTML, CSS/Scss',
+	'JavaScript(ES6), TypeScript',
+	'Vue(Vue 3, Quasar, Nuxt.js, Vuex)',
+	'React(Redux, React native)',
+	'Git(GitHub, BitBucket)',
+]
+const BACKEND_ITEMS = [
+	'Node.js(Express.js, Adonis.js)',
+	'Postgresql, Prisma 2',
+	'Docker',
+]
+const SHOW_LESS_SIZE = {
+	width: 144,
+	height: 52,
+}
 export default {
+	name: 'AboutMe',
+	components: { SectionAbout, SectionSkill },
+	FE_ITEMS: FRONTEND_ITEMS,
+	BE_ITEMS: BACKEND_ITEMS,
 	props: {
 		nextPage: {
 			type: Boolean,
 			default: false,
 		},
+		pageLoading: {
+			type: [Boolean, undefined],
+			default: undefined,
+		},
+		sliding: {
+			type: Boolean,
+			default: undefined,
+		},
 	},
 	data() {
 		return {
 			showMore: true,
+			initialWidth: null,
+			initialHeight: null,
+			transitioning: false,
+			box: {
+				width: null,
+				height: null,
+			},
+			aboutSize: {
+				width: null,
+				height: null,
+			},
+			skillSize: {
+				width: null,
+				height: null,
+			},
 		}
+	},
+	computed: {
+		previousRoute() {
+			return this.$store.state.previousRoute
+		},
+	},
+
+	watch: {
+		nextPage: {
+			handler(skillPage) {
+				if (skillPage) {
+					if (!this.showMore) {
+						console.log('tu?')
+						this.transitioning = true
+					}
+					this.showMore
+						? this.setSize('skillSize')
+						: this.setSize('showLess')
+				} else {
+					this.setSize('aboutSize')
+				}
+			},
+			// immediate: true,
+		},
+		showMore(show) {
+			if (!show) {
+				this.setSize('showLess')
+				return
+			}
+			if (this.nextPage) {
+				this.transitioning = true
+
+				this.setSize('skillSize')
+			}
+		},
 	},
 	mounted() {
 		this.$refs.box.addEventListener('animationend', this.boxFinished, {
 			once: true,
 		})
+		this.$refs.boxContent.addEventListener(
+			'transitionstart',
+			this.onTransitionStart
+		)
+		this.$refs.boxContent.addEventListener(
+			'transitionend',
+			this.onTransitionEnd
+		)
+		this.calculateSizes('ghostAbout')
+		this.calculateSizes('ghostSkill')
+		this.setSize('aboutSize')
 	},
 	methods: {
-		boxFinished(e) {
+		onTransitionStart(e) {
+			if (e.propertyName !== 'width' || this.showMore) return
+			this.transitioning = true
+		},
+		onTransitionEnd(e) {
+			if (e.propertyName !== 'width') return
+			this.transitioning = false
+		},
+		boxFinished() {
 			this.$refs.box.classList.add('box-finished')
+		},
+		calculateSizes(container) {
+			const { width, height } = this.$refs[
+				container
+			].getBoundingClientRect()
+			if (container === 'ghostAbout') {
+				this.aboutSize.width = width
+				this.aboutSize.height = height
+			} else {
+				this.skillSize.width = width
+				this.skillSize.height = height
+			}
+		},
+		setSize(type) {
+			console.log('SETTING SIZE', type)
+			if (type === 'showLess') {
+				this.box.width = SHOW_LESS_SIZE.width + 'px'
+				this.box.height = SHOW_LESS_SIZE.height + 'px'
+				return
+			}
+			this.box.width = this[type].width + 'px'
+			this.box.height = this[type].height + 'px'
 		},
 	},
 }
@@ -76,8 +201,8 @@ export default {
 
 <style lang="scss" scoped>
 $border-color-about: #5903e2;
-// $border-color-skill: #7206d5;
 $border-color-skill: #f7ab1e;
+
 .box-container {
 	position: absolute;
 	left: 0;
@@ -88,7 +213,6 @@ $border-color-skill: #f7ab1e;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	// margin-top: -10rem;
 	z-index: 2;
 	pointer-events: none;
 	overflow: hidden;
@@ -99,7 +223,9 @@ $border-color-skill: #f7ab1e;
 	top: 15%;
 	pointer-events: initial;
 	max-width: 420px;
-	// transition: all 1s;
+	line-height: 22px;
+
+	transition: all 1s;
 }
 
 .about-title,
@@ -110,10 +236,21 @@ $border-color-skill: #f7ab1e;
 	font-weight: normal;
 	color: #e202ae;
 	margin-bottom: 1rem;
-	transition: all 2s ease;
-
-	animation: slideInUp;
-	animation-duration: 0.5s;
+	width: 1px;
+	white-space: nowrap;
+}
+.title-enter-active {
+	transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 300ms;
+	transition-delay: 400ms;
+}
+.title-leave-active {
+	transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+		opacity 120ms;
+}
+.title-enter, .title-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
+	transform: translateY(100%);
 }
 .skills-title {
 	color: #df1041;
@@ -122,26 +259,17 @@ $border-color-skill: #f7ab1e;
 .box-finished {
 	.box-text p {
 		opacity: 1;
-		animation: fadeIn;
-		animation-duration: 0.3s;
 
 		strong {
 			color: #fff;
 		}
-		span {
-			display: block;
-			color: #f7ab1e;
-		}
-	}
-	ul {
-		margin-top: 10px;
-		color: #f7ab1e;
 	}
 }
 
-.box-text {
+.box-text,
+.ghost-text {
 	$borderColor: #5903e2;
-	// $borderColor: #1e053a;
+	overflow: hidden;
 	position: relative;
 	font-family: 'IBM Plex Mono', monospace;
 	font-weight: normal;
@@ -150,14 +278,27 @@ $border-color-skill: #f7ab1e;
 	padding: 1.5rem;
 	box-shadow: $borderColor 0px 0.4em, $borderColor 0px -0.4em,
 		$borderColor 0.4em 0px, $borderColor -0.4em 0px;
-	transition: background 2s ease;
+	transition: all 400ms ease;
 	p {
 		opacity: 0;
 	}
 }
+
+.ghost-wrapper {
+	visibility: hidden;
+	pointer-events: 0;
+}
+.ghost-text {
+	max-width: 420px;
+	line-height: 22px;
+	transition: none;
+	p {
+		opacity: 1;
+	}
+}
+
 .skill-page {
 	.box-text {
-		// background: #4e0277;
 		background: #0e031b;
 		box-shadow: $border-color-skill 0px 0.4em,
 			$border-color-skill 0px -0.4em, $border-color-skill 0.4em 0px,
@@ -181,19 +322,14 @@ $border-color-skill: #f7ab1e;
 	}
 }
 
-// @media (max-width: 660px) {
-// 	.box-container {
-// 		align-items: center;
-// 		padding-left: 0;
-// 		padding-top: 4rem;
-// 	}
-// }
 @media (max-width: 430px) {
-	.box-content {
+	.box-content,
+	.ghost-wrapper {
 		padding: 7px;
-		top: 5%;
+		top: 40px;
 	}
-	.box-text {
+	.box-text,
+	.ghost-text {
 		width: 100%;
 		padding: 1rem;
 	}
