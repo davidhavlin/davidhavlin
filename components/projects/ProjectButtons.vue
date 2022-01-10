@@ -6,7 +6,7 @@
 			main-color="var(--main-bg-color)"
 			second-color="#0e031b"
 			border-color="#0e031b"
-			text-color="#00f3ff"
+			text-color="var(--select-color)"
 			@click.native="$emit('clickshow')"
 			>Show me</MyButton
 		>

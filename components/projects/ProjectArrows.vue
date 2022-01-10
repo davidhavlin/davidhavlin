@@ -57,7 +57,7 @@
 
 		&:hover {
 			path {
-				stroke: #00f2fe;
+				stroke: var(--select-color);
 			}
 		}
 	}

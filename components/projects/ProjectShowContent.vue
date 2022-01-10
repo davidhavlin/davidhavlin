@@ -164,6 +164,7 @@ export default {
 			color: #fff;
 			animation-delay: 0.5s;
 			min-width: 250px;
+			line-height: 20px;
 		}
 		.project-url {
 			color: #d3015e;
@@ -265,6 +266,8 @@ export default {
 		transform: translateY(0);
 		background: #0c0110;
 		padding-top: 2rem;
+		position: unset;
+		max-width: 400px;
 
 		.showcase-content {
 			margin-bottom: 1rem;
@@ -273,6 +276,12 @@ export default {
 		.project-info {
 			margin-top: 0rem;
 		}
+	}
+}
+
+@media (max-width: 440px) {
+	.show .project-showcase {
+		max-width: 100vw;
 	}
 }
 

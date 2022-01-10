@@ -1,5 +1,5 @@
 <template>
-	<div class="navigation-links">
+	<div class="navigation-links" :class="{ 'links-hidden': showcase }">
 		<!-- ***********    HOME link  ****************** -->
 		<div class="link home-icon" :class="{ disabled: loading }">
 			<nuxt-link to="/">
@@ -62,6 +62,11 @@ export default {
 			default: true,
 		},
 	},
+	computed: {
+		showcase() {
+			return this.$store.state.showcase
+		},
+	},
 }
 </script>
 
@@ -86,6 +91,7 @@ export default {
 	position: fixed;
 	transform: translate3D(0, 0, 0);
 	left: 0;
+	transition: transform 300ms;
 
 	.link {
 		text-align: center;
@@ -200,6 +206,11 @@ export default {
 		// 		opacity: 0;
 		// 	}
 		// }
+	}
+}
+@media (max-width: 620px) {
+	.navigation-links.links-hidden {
+		transform: translateX(100%);
 	}
 }
 </style>

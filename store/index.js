@@ -6,6 +6,7 @@ export const state = () => ({
 	elTop: null,
 	elLeft: null,
 	blogs: [],
+	showcase: false,
 })
 
 export const mutations = {
@@ -29,6 +30,9 @@ export const mutations = {
 	},
 	SET_PREVIOUS_ROUTE(state, value) {
 		state.previousRoute = value
+	},
+	TOGGLE_SHOWCASE(state) {
+		state.showcase = !state.showcase
 	},
 }
 

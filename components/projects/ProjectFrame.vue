@@ -15,7 +15,7 @@ export default {}
 	top: 49.7%;
 	left: 49.9%;
 	transform: translate(-50%, -50%);
-	outline: 6px solid #34b1f8;
+	outline: 6px solid var(--select-color);
 }
 .projectShowcase .selected-frame {
 	width: 400px;
@@ -36,7 +36,14 @@ export default {}
 	.projectShowcase .selected-frame {
 		width: 400px;
 		left: 50%;
-		top: 32%;
+		// top: 23.2%;
+		top: 200px;
+	}
+}
+
+@media (max-width: 440px) {
+	.projectShowcase .selected-frame {
+		width: 100vw;
 	}
 }
 

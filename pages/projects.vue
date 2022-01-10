@@ -1,5 +1,9 @@
 <template>
-	<div class="project-page" :class="{ projectShowcase: showCase }">
+	<div
+		id="showcase"
+		class="project-page"
+		:class="{ projectShowcase: showCase }"
+	>
 		<h1 ref="pageTitle" class="project-page-title">
 			My Projects ({{ index }}/{{ myProjects.length }})
 		</h1>
@@ -190,6 +194,8 @@ export default {
 				if (!project.classList.contains('selected'))
 					project.classList.add('hideBox')
 			})
+			this.$store.commit('TOGGLE_SHOWCASE')
+			// this.$store.commit('SET_SHOWCASE_BG')
 			this.removeHovered()
 			this.showCase = true
 			this.animated = false
@@ -197,14 +203,19 @@ export default {
 			// zafarbim page title podla vybraneho projektu, nech ladia farby
 			// prettier-ignore
 			this.$refs.pageTitle.style.color = this.myProjects[this.realIndex].color.main
+			const el = document.getElementById('showcase')
+			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
+				this.myProjects[this.realIndex].color.main
+			} 302%)`
 		},
 		closeProject() {
+			this.$store.commit('TOGGLE_SHOWCASE')
 			this.projects.forEach((proj) =>
 				proj.classList.remove('hideBox', 'show')
 			)
 			this.showCase = false
 
-			this.$refs.pageTitle.style.color = '#34b1f8'
+			this.$refs.pageTitle.style.color = '#38fdfe'
 			// aby po kliknuti na closebtn sa z animovali rychlejsie, inak by to trvalo ako pri renderi
 			this.projects.forEach(
 				(proj) => (proj.style.animationDelay = '50ms')
@@ -218,10 +229,16 @@ export default {
 			this.selectMidleBox(true)
 			this.counter++
 			this.containerTransform()
-			// prettier-ignore
-			this.realIndex === this.myProjects.length - 1	? (this.realIndex = 0) : this.realIndex++
-			// prettier-ignore
-			this.index === this.myProjects.length	? (this.index = 1) : this.index++
+			this.realIndex === this.myProjects.length - 1
+				? (this.realIndex = 0)
+				: this.realIndex++
+			this.index === this.myProjects.length
+				? (this.index = 1)
+				: this.index++
+			const el = document.getElementById('showcase')
+			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
+				this.myProjects[this.realIndex].color.main
+			} 302%)`
 		},
 		prevProject() {
 			if (this.active) return
@@ -343,13 +360,14 @@ export default {
 	background: var(--main-bg-color);
 	overflow: hidden;
 	z-index: 10;
+	transition: background 300ms;
 }
 
 .project-page-title {
 	font-family: 'Press Start 2P', cursive;
 	font-weight: normal;
 	font-size: 1.3em;
-	color: #34b1f8;
+	color: var(--select-color);
 	z-index: 10;
 	// zabranuje aby text glitchoval kvoli hover animacii na inom elem.
 	transform: translateZ(0);
@@ -459,15 +477,20 @@ export default {
 @media (max-width: 620px) {
 	.projectShowcase {
 		justify-content: flex-start;
-		height: auto;
-		padding-top: 5rem;
-		padding-bottom: 16rem;
+		// height: auto;
+		overflow: auto;
+		padding: 100px 0;
+		// padding-bottom: 16rem;
 
 		.projects {
 			height: auto;
-			padding-top: 1.5rem;
-			padding-bottom: 17rem;
+			// padding-top: 1.5rem;
+			// padding-bottom: 17rem;
 			transform: translateX(0px);
+		}
+
+		.project-page-title {
+			margin-bottom: 20px;
 		}
 	}
 }
@@ -490,7 +513,7 @@ export default {
 			top: -6px;
 			left: -10px;
 			width: 150%;
-			height: 106%;
+			height: 117%;
 			background: #140527e0;
 			z-index: 10;
 			pointer-events: none;

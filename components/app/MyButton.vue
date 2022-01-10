@@ -73,7 +73,7 @@ export default {
 }
 
 .btn:hover {
-	border-color: #00f3ff !important;
+	border-color: var(--select-color) !important;
 	transform: translateY(2px);
 
 	.btn-half-bg {

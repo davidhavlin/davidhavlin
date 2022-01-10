@@ -23,7 +23,6 @@
 		</div>
 
 		<ProjectShowContent v-show="showtime" :project="project" />
-		<ProjectShowBackground v-show="showtime" :project="project" />
 	</div>
 </template>
 
@@ -62,11 +61,16 @@ export default {
 		},
 		gradient() {
 			return {
-				background: `linear-gradient(0deg, rgba(14,6,28,0) 0%, ${this.project.color.main} 100%)`,
+				// background: `linear-gradient(0deg, rgba(14,6,28,0) 0%, ${this.project.color.main} 100%)`,
+				background: `linear-gradient(0deg, ${this.project.color.main} 10%, rgba(0,0,0,0) 50%, ${this.project.color.second} 90%)`,
 			}
 		},
 		logo() {
-			return { backgroundImage: `url(${this.project.logo})` }
+			return {
+				backgroundImage: `url(${this.project.logo})`,
+				borderColor: this.project.color.main,
+				color: this.project.color.main,
+			}
 		},
 	},
 	watch: {
@@ -90,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 .selected .project {
-	color: #00f3ff;
+	color: var(--select-color);
 }
 
 .loader {
@@ -130,7 +134,7 @@ export default {
 }
 .hovered {
 	.project {
-		outline: 3px solid #34b1f8;
+		outline: 3px solid #38fdfe;
 		background-position: -320px;
 	}
 	.title {
@@ -186,13 +190,21 @@ export default {
 	transform: translate(-50%, 50%);
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: 27px;
+	background-size: 20px;
+	border: 3px solid transparent;
+	transition: width 200ms, height 200ms;
 }
 
 .selected .logo {
 	box-sizing: content-box;
-	border: 3px solid #34b1f8;
+	border: 3px solid #38fdfe !important;
 	background-color: #100317;
+	background-size: 25px;
+	width: 50px;
+	height: 50px;
+}
+.hovered .logo {
+	border: 3px solid #38fdfe !important;
 }
 
 .show {
@@ -213,7 +225,7 @@ export default {
 		}
 	}
 	.project:hover {
-		outline: 3px solid #00f3ff;
+		outline: 3px solid var(--select-color);
 		background-position: -215px;
 		.title {
 			transform: translateX(123px); // toto sposobuje ten text flickering
@@ -242,7 +254,7 @@ export default {
 	}
 	.logo {
 		z-index: 10;
-		border: 8px solid #0b000f;
+		border: 3px solid currentColor !important;
 		background-color: #0b000f;
 	}
 }
