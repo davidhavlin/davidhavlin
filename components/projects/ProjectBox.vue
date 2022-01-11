@@ -192,7 +192,7 @@ export default {
 	background-repeat: no-repeat;
 	background-size: 20px;
 	border: 3px solid transparent;
-	transition: width 200ms, height 200ms;
+	// transition: width 200ms, height 200ms;
 }
 
 .selected .logo {

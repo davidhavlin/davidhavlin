@@ -1,5 +1,8 @@
 <template>
-	<div class="page-blogs-container">
+	<div
+		class="page-blogs-container"
+		:class="{ 'container-empty': blogs.length === 0 }"
+	>
 		<section class="title-wrapper">
 			<h1 class="page-title">Moje blogy</h1>
 		</section>
@@ -60,11 +63,14 @@
 			</div>
 		</section>
 		<section v-else>
-			<div class="blog-no-blogs">
-				Zatiaľ žiadne články...
+			<div ref="no-blogs" class="blog-no-blogs">
+				<!-- Zatiaľ žiadne články... -->
 			</div>
 		</section>
 		<div v-if="blogs.length > 2" class="fade-wrapper"></div>
+		<div class="stars-wrapper">
+			<Stars class="skuska move" />
+		</div>
 	</div>
 </template>
 
@@ -75,6 +81,7 @@ export default {
 	data() {
 		return {
 			showBlogs: false,
+			index: 0,
 		}
 	},
 	computed: {
@@ -89,6 +96,7 @@ export default {
 		setTimeout(() => {
 			this.showBlogs = true
 		}, 1000)
+		this.writingEffect('Zatiaľ žiadne články...', this.$refs['no-blogs'])
 	},
 	methods: {
 		fetchBlogs() {
@@ -111,6 +119,18 @@ export default {
 		},
 		goToBlog(id) {
 			window.open(`${SHOWMECODE_URL}/post/${id}`, '_blank').focus()
+		},
+		writingEffect(typedString, element) {
+			if (this.index > typedString.length) {
+				this.index = 0
+				return
+			}
+			this.letter = typedString.slice(0, this.index++)
+			element.textContent = this.letter
+
+			setTimeout(() => {
+				this.writingEffect(typedString, element)
+			}, 100)
 		},
 	},
 	head() {
@@ -151,6 +171,13 @@ export default {
 	overflow-y: auto;
 	padding-left: 90px;
 	padding-bottom: 100px;
+}
+
+.container-empty {
+	justify-content: center;
+	section.title-wrapper {
+		margin-top: 0 !important;
+	}
 }
 
 .page-title {
@@ -316,9 +343,10 @@ section.blogs-wrapper {
 	}
 
 	&-no-blogs {
-		color: #08e6f2;
-		margin-top: 50px;
+		color: var(--select-color);
+		margin-top: 30px;
 		font-family: monospace;
+		height: 18px;
 	}
 }
 
@@ -354,6 +382,30 @@ section.blogs-wrapper {
 		grid-template-columns: 1fr;
 		justify-items: center;
 		width: 100%;
+	}
+}
+
+.stars-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+.skuska {
+	transition: all 10s;
+	transform: scale(1);
+	animation: traveling 20s linear infinite;
+}
+.move {
+	// transform: scale(2);
+}
+
+@keyframes traveling {
+	to {
+		transform: scale(3);
 	}
 }
 </style>

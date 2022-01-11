@@ -119,6 +119,10 @@ export default {
 		margin-bottom: 0;
 	}
 
+	.blog-icon {
+		margin-top: 30px;
+	}
+
 	.link-name {
 		font-family: 'Press Start 2P', cursive;
 		font-size: 12px;
@@ -137,14 +141,14 @@ export default {
 	}
 	.hash {
 		font-family: 'Press Start 2P', cursive;
-		color: #fff;
+		color: var(--select-color);
 	}
 }
 
 // ------- AKTIV KLASSA
 .nuxt-link-exact-active {
 	.link-name {
-		color: #fff;
+		color: var(--select-color);
 		opacity: 1;
 	}
 }
@@ -206,6 +210,9 @@ export default {
 		// 		opacity: 0;
 		// 	}
 		// }
+		.blog-icon {
+			transform: translateX(11px);
+		}
 	}
 }
 @media (max-width: 620px) {

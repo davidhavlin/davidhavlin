@@ -74,10 +74,18 @@ export default {
 			return Array.from(document.querySelectorAll('.ProjectBox'))
 		},
 	},
+	watch: {
+		'$route.query.project'(project) {
+			if (!project) {
+				this.closeProject()
+			}
+		},
+	},
 	destroyed() {
 		window.removeEventListener('resize', this.resizeHandler)
 	},
 	mounted() {
+		this.$router.replace({ query: {} })
 		this.cloneElements()
 		this.hideClones()
 		this.onMountedStyles()
@@ -88,6 +96,7 @@ export default {
 		this.handleSwipe()
 		window.addEventListener('resize', this.resizeHandler)
 	},
+
 	methods: {
 		resizeHandler(e) {
 			if (e.target.innerWidth < 931) {
@@ -207,6 +216,10 @@ export default {
 			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
 				this.myProjects[this.realIndex].color.main
 			} 302%)`
+			console.log(this.myProjects[this.realIndex])
+			this.$router.push({
+				query: { project: this.myProjects[this.realIndex].slug },
+			})
 		},
 		closeProject() {
 			this.$store.commit('TOGGLE_SHOWCASE')

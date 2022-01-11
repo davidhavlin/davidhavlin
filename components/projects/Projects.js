@@ -7,6 +7,7 @@ const myProjects = [
 			'Moja osobná portfolio stránka ktorú som sa pokúsil spraviť trošku netradične.',
 		logo: require('@/assets/images/projects/dh-logo.png'),
 		github: 'https://github.com/davidhavlin/dhavlin.github.io',
+		slug: 'davidhavlin',
 		color: {
 			main: '#3f0c8d',
 			second: '#155391',
@@ -30,6 +31,7 @@ const myProjects = [
 			'Moja plne funkčná prvá full-stack stránka o zdielaní blogov a obrázkov. S registráciou, komentovaním, lajkovaním a veľa ďalšieho. V hlavnej úlohe Typescript, Node, Express.',
 		logo: require('@/assets/images/projects/a.png'),
 		// github: 'https://github.com/davidhavlin/dhavlin.github.io',
+		slug: 'show-me-code',
 		color: {
 			main: '#4843a6',
 			second: '#2bcdae66',
@@ -63,6 +65,7 @@ const myProjects = [
 			'Taka výzva prerobiť Netflix stránku a vyskúšať si iný framework, práca s API filmovou databázou.',
 		logo: require('@/assets/images/projects/nf-logo.png'),
 		github: 'https://github.com/davidhavlin/netflix-clone',
+		slug: 'netflix-clone',
 		color: {
 			main: '#f00a40',
 			second: '#4d475d',
@@ -85,6 +88,7 @@ const myProjects = [
 		desc: 'Prerobená moja vôbec prvá web stránka pre virtuálnu realitu.',
 		logo: require('@/assets/images/projects/vr-logo.png'),
 		github: 'https://github.com/davidhavlin/videosaratov',
+		slug: 'video-saratov',
 		color: {
 			main: '#4a12be',
 			second: '#f0103b',

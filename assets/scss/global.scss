@@ -64,7 +64,7 @@
 	.HomeIcon_svg__icon-stroke,
 	.AboutIcon_svg__icon-about-stroke {
 		// stroke: #df1041;
-		stroke: #5900ff;
+		stroke: var(--select-color);
 	}
 }
 // @media (hover: none) {
