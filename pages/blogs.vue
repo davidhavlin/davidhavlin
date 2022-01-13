@@ -69,7 +69,9 @@
 		</section>
 		<div v-if="blogs.length > 2" class="fade-wrapper"></div>
 		<div class="stars-wrapper">
-			<Stars class="skuska move" />
+			<Stars class="stars" />
+			<Stars class="stars2" />
+			<Stars class="stars3" />
 		</div>
 	</div>
 </template>
@@ -86,9 +88,7 @@ export default {
 	},
 	computed: {
 		blogs() {
-			console.log(this.$store.state.blogs)
 			return this.$store.state.blogs || []
-			// return []
 		},
 	},
 	mounted() {
@@ -163,7 +163,7 @@ export default {
 	width: 100%;
 	height: 100%;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	color: #fff;
@@ -229,17 +229,6 @@ section.blogs-wrapper {
 	position: relative;
 	max-width: 300px;
 	width: 100%;
-	// transition: all 1s;
-	// background: transparent;
-	// transform: scale(0.01);
-	animation: skuska 2s cubic-bezier(0.6, 0.04, 0.98, 0.335) forwards;
-}
-@keyframes skuska {
-	to {
-		transform: scale(1);
-		top: 0;
-		left: 0;
-	}
 }
 .blog {
 	$borderColor: #371364;
@@ -394,17 +383,31 @@ section.blogs-wrapper {
 	overflow: hidden;
 }
 
-.skuska {
+.stars,
+.stars2,
+.stars3 {
 	transition: all 10s;
-	transform: scale(1);
+	transform: scale(0.8);
 	animation: traveling 20s linear infinite;
+	opacity: 0;
 }
-.move {
-	// transform: scale(2);
+.stars2 {
+	animation-delay: 5s;
+}
+
+.stars3 {
+	animation-delay: 8s;
 }
 
 @keyframes traveling {
-	to {
+	10% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
 		transform: scale(3);
 	}
 }

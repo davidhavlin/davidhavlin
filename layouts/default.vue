@@ -17,21 +17,19 @@ export default {
 	},
 	watch: {
 		'$route.path'(newValue, oldValue) {
-			;['/about', '/blogs', '/contact'].includes(newValue)
+			;['/about', /* '/blogs', */ '/contact'].includes(newValue)
 				? (this.showStars = true)
 				: (this.showStars = false)
 
 			this.loading = true
-			console.log('PAGE LOADING START')
 			if (this.moveStars) this.moveStars = false
 			setTimeout(() => {
 				this.loading = false
-				console.log('PAGE LOADING END')
 			}, 2000)
 		},
 	},
 	mounted() {
-		;['about', 'blogs', 'contact'].includes(this.$route.name)
+		;['about', /* '/blogs', */ 'contact'].includes(this.$route.name)
 			? (this.showStars = true)
 			: (this.showStars = false)
 	},

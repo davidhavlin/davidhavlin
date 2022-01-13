@@ -1,4 +1,7 @@
 export default {
+	env: {
+		SERVER_URL: 'http://localhost:1337',
+	},
 	loading: '~/components/app/LoadingComponent.vue',
 	/*
 	 ** Nuxt rendering mode

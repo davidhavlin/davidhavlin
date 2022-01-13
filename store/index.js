@@ -31,6 +31,9 @@ export const mutations = {
 	SET_PREVIOUS_ROUTE(state, value) {
 		state.previousRoute = value
 	},
+	SET_SHOWCASE(state, value) {
+		state.showcase = value
+	},
 	TOGGLE_SHOWCASE(state) {
 		state.showcase = !state.showcase
 	},
@@ -40,9 +43,7 @@ export const actions = {
 	async fetchBlogs({ commit }) {
 		try {
 			const { data: res } = await this.$axios.get(
-				// 'https://api-showmecode.herokuapp.com'
-				// 'http://localhost:1337/post/author/2/posts'
-				'http://localhost:1337/post/author/2/posts'
+				`${process.env.SERVER_URL}/post/author/2/posts`
 			)
 			commit('SET_BLOGS', res.data)
 		} catch (error) {

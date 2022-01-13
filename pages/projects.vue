@@ -78,14 +78,15 @@ export default {
 		'$route.query.project'(project) {
 			if (!project) {
 				this.closeProject()
+				// return
 			}
+			// console.log({ project }) // TODO open projekt from query
 		},
 	},
 	destroyed() {
 		window.removeEventListener('resize', this.resizeHandler)
 	},
 	mounted() {
-		this.$router.replace({ query: {} })
 		this.cloneElements()
 		this.hideClones()
 		this.onMountedStyles()
@@ -95,9 +96,35 @@ export default {
 		this.animationOnRender()
 		this.handleSwipe()
 		window.addEventListener('resize', this.resizeHandler)
+		if (this.$route.query.project) {
+			this.$router.push({ query: {} })
+			// TODO nech otvara projekt z query
+			this.setProjectFromQuery(this.$route.query.project)
+		}
 	},
 
 	methods: {
+		setProjectFromQuery(slug) {
+			const slugIndex = myProjects.findIndex((p) => p.slug === slug)
+			console.log({ slugIndex, slug })
+
+			this.selectMidleBox(true)
+			this.counter++
+			this.containerTransform()
+			this.realIndex = slugIndex
+			this.index = slugIndex
+			// this.realIndex === this.myProjects.length - 1
+			// 	? (this.realIndex = 0)
+			// 	: this.realIndex++
+			// this.index === this.myProjects.length
+			// 	? (this.index = 1)
+			// 	: this.index++
+			this.$nextTick(() => {
+				this.showProject()
+			})
+			// setTimeout(() => {
+			// }, 2000)
+		},
 		resizeHandler(e) {
 			if (e.target.innerWidth < 931) {
 				this.size = 180
@@ -203,7 +230,7 @@ export default {
 				if (!project.classList.contains('selected'))
 					project.classList.add('hideBox')
 			})
-			this.$store.commit('TOGGLE_SHOWCASE')
+			this.$store.commit('SET_SHOWCASE', true)
 			// this.$store.commit('SET_SHOWCASE_BG')
 			this.removeHovered()
 			this.showCase = true
@@ -216,13 +243,16 @@ export default {
 			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
 				this.myProjects[this.realIndex].color.main
 			} 302%)`
-			console.log(this.myProjects[this.realIndex])
 			this.$router.push({
 				query: { project: this.myProjects[this.realIndex].slug },
 			})
 		},
 		closeProject() {
-			this.$store.commit('TOGGLE_SHOWCASE')
+			this.$router.push({ query: {} })
+			const el = document.getElementById('showcase')
+			el.style.background = null
+
+			this.$store.commit('SET_SHOWCASE', false)
 			this.projects.forEach((proj) =>
 				proj.classList.remove('hideBox', 'show')
 			)
@@ -248,10 +278,10 @@ export default {
 			this.index === this.myProjects.length
 				? (this.index = 1)
 				: this.index++
-			const el = document.getElementById('showcase')
-			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
-				this.myProjects[this.realIndex].color.main
-			} 302%)`
+			// const el = document.getElementById('showcase')
+			// el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
+			// 	this.myProjects[this.realIndex].color.main
+			// } 302%)`
 		},
 		prevProject() {
 			if (this.active) return
@@ -264,6 +294,10 @@ export default {
 			this.realIndex === 0 ? (this.realIndex = this.myProjects.length - 1) : this.realIndex--
 			// prettier-ignore
 			this.index === 1 ? (this.index = this.myProjects.length) : this.index--
+			// const el = document.getElementById('showcase')
+			// el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
+			// 	this.myProjects[this.realIndex].color.main
+			// } 302%)`
 		},
 
 		containerTransform(transition = true) {

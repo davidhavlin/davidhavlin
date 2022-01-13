@@ -47,7 +47,6 @@ export default {
 	},
 	watch: {
 		loading(newValue, oldValue) {
-			console.log('LOADING', newValue)
 			if (newValue) {
 				setTimeout(() => {
 					this.renderLines()

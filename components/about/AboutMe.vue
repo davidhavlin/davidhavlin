@@ -121,7 +121,6 @@ export default {
 			handler(skillPage) {
 				if (skillPage) {
 					if (!this.showMore) {
-						console.log('tu?')
 						this.transitioning = true
 					}
 					this.showMore
@@ -186,7 +185,6 @@ export default {
 			}
 		},
 		setSize(type) {
-			console.log('SETTING SIZE', type)
 			if (type === 'showLess') {
 				this.box.width = SHOW_LESS_SIZE.width + 'px'
 				this.box.height = SHOW_LESS_SIZE.height + 'px'

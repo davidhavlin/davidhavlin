@@ -313,4 +313,8 @@ export default {
 		height: 100vh;
 	}
 }
+
+// .ProjectBox:not(.selected) {
+// 	opacity: 0.2 !important;
+// }
 </style>
