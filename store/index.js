@@ -41,12 +41,13 @@ export const mutations = {
 
 export const actions = {
 	async fetchBlogs({ commit }) {
+		console.log('TUTUT', process.env.SERVER_URL, process.env.NIECO)
 		const API_URL = process.env.dev
 			? 'http://localhost:1337'
 			: 'https://api-showmecode.herokuapp.com'
 		try {
 			const { data: res } = await this.$axios.get(
-				`${API_URL}/post/author/2/posts`
+				`${API_URL}/post/author/3/posts`
 			)
 			commit('SET_BLOGS', res.data)
 		} catch (error) {
