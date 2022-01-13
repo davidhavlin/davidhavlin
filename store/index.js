@@ -41,7 +41,9 @@ export const mutations = {
 
 export const actions = {
 	async fetchBlogs({ commit }) {
-		const API_URL = process.env.SERVER_URL || 'http://localhost:1337'
+		const API_URL = process.env.dev
+			? 'http://localhost:1337'
+			: 'https://api-showmecode.herokuapp.com'
 		try {
 			const { data: res } = await this.$axios.get(
 				`${API_URL}/post/author/2/posts`

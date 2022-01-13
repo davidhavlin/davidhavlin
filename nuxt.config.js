@@ -1,4 +1,7 @@
 export default {
+	env: {
+		dev: process.env.NODE_ENV !== 'production',
+	},
 	loading: '~/components/app/LoadingComponent.vue',
 	/*
 	 ** Nuxt rendering mode
