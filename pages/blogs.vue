@@ -95,8 +95,11 @@ export default {
 		this.fetchBlogs()
 		setTimeout(() => {
 			this.showBlogs = true
+			this.writingEffect(
+				'Zatiaľ žiadne články...',
+				this.$refs['no-blogs']
+			)
 		}, 1000)
-		this.writingEffect('Zatiaľ žiadne články...', this.$refs['no-blogs'])
 	},
 	methods: {
 		fetchBlogs() {
@@ -121,6 +124,7 @@ export default {
 			window.open(`${SHOWMECODE_URL}/post/${id}`, '_blank').focus()
 		},
 		writingEffect(typedString, element) {
+			if (!element) return
 			if (this.index > typedString.length) {
 				this.index = 0
 				return
@@ -408,7 +412,7 @@ section.blogs-wrapper {
 	}
 	100% {
 		opacity: 0;
-		transform: scale(3);
+		transform: scale(2.7);
 	}
 }
 </style>

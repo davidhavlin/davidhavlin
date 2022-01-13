@@ -41,9 +41,10 @@ export const mutations = {
 
 export const actions = {
 	async fetchBlogs({ commit }) {
+		const API_URL = process.env.SERVER_URL || 'http://localhost:1337'
 		try {
 			const { data: res } = await this.$axios.get(
-				`${process.env.SERVER_URL}/post/author/2/posts`
+				`${API_URL}/post/author/2/posts`
 			)
 			commit('SET_BLOGS', res.data)
 		} catch (error) {
