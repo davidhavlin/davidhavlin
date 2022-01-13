@@ -41,7 +41,6 @@ export const mutations = {
 
 export const actions = {
 	async fetchBlogs({ commit }) {
-		console.log('TUTUT', process.env.SERVER_URL, process.env.NIECO)
 		const API_URL = process.env.dev
 			? 'http://localhost:1337'
 			: 'https://api-showmecode.herokuapp.com'

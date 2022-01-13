@@ -8,10 +8,9 @@
 		</section>
 		<section
 			v-if="blogs.length > 0"
-			class="blogs-wrapper something"
+			class="blogs-wrapper"
 			:class="{
 				'blogs-not-enough': blogs.length <= 2,
-				reveal: showBlogs,
 			}"
 		>
 			<div
@@ -19,7 +18,7 @@
 				:key="`blog-id-${blog.id}`"
 				class="blog-wrapper"
 			>
-				<div @click="goToBlog(blog.id)" class="blog">
+				<div class="blog" @click="goToBlog(blog.id)">
 					<header>
 						<div class="blog-created">
 							{{ formatDate(blog.createdAt) }}

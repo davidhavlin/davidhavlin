@@ -225,6 +225,9 @@ export default {
 		},
 
 		showProject() {
+			this.$router.push({
+				query: { project: this.myProjects[this.realIndex].slug },
+			})
 			/* pokial nemaju classu selected tak dostanu classu ktora ich schova */
 			this.projects.map((project) => {
 				if (!project.classList.contains('selected'))
@@ -243,11 +246,9 @@ export default {
 			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
 				this.myProjects[this.realIndex].color.main
 			} 302%)`
-			this.$router.push({
-				query: { project: this.myProjects[this.realIndex].slug },
-			})
 		},
 		closeProject() {
+			console.log(this.$route)
 			this.$router.push({ query: {} })
 			const el = document.getElementById('showcase')
 			el.style.background = null
