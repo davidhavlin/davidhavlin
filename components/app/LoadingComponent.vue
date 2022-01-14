@@ -91,6 +91,7 @@ export default {
 			}
 		},
 		start() {
+			this.$store.commit('SET_PAGE_LOADING', true)
 			setTimeout(() => {
 				this.loading = true
 			}, 400)
@@ -100,6 +101,7 @@ export default {
 				this.index = 0
 				this.scale = 0
 				this.loading = false
+				this.$store.commit('SET_PAGE_LOADING', false)
 			}, 1600)
 		},
 	},

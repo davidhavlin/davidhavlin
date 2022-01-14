@@ -4,7 +4,7 @@
 		class="project-page"
 		:class="{ projectShowcase: showCase }"
 	>
-		<h1 ref="pageTitle" class="project-page-title">
+		<h1 v-if="!showCase" ref="pageTitle" class="project-page-title">
 			My Projects ({{ index }}/{{ myProjects.length }})
 		</h1>
 		<div class="under-projects">
@@ -73,6 +73,14 @@ export default {
 		projects() {
 			return Array.from(document.querySelectorAll('.ProjectBox'))
 		},
+		pageLoading() {
+			return this.$store.state.pageLoading
+		},
+	},
+	mounted() {
+		if (!this.pageLoading) {
+			this.mountProjects()
+		}
 	},
 	watch: {
 		'$route.query.project'(project) {
@@ -82,28 +90,32 @@ export default {
 			}
 			// console.log({ project }) // TODO open projekt from query
 		},
+		pageLoading(loading) {
+			if (loading) return
+			this.mountProjects()
+		},
 	},
 	destroyed() {
 		window.removeEventListener('resize', this.resizeHandler)
 	},
-	mounted() {
-		this.cloneElements()
-		this.hideClones()
-		this.onMountedStyles()
-		this.selected = this.projects[this.counter + 1]
-
-		this.handleHover()
-		this.animationOnRender()
-		this.handleSwipe()
-		window.addEventListener('resize', this.resizeHandler)
-		if (this.$route.query.project) {
-			this.$router.push({ query: {} })
-			// TODO nech otvara projekt z query
-			this.setProjectFromQuery(this.$route.query.project)
-		}
-	},
 
 	methods: {
+		mountProjects() {
+			this.cloneElements()
+			this.hideClones()
+			this.onMountedStyles()
+			this.selected = this.projects[this.counter + 1]
+
+			this.handleHover()
+			this.animationOnRender()
+			this.handleSwipe()
+			window.addEventListener('resize', this.resizeHandler)
+			if (this.$route.query.project) {
+				this.$router.push({ query: {} })
+				// TODO nech otvara projekt z query
+				this.setProjectFromQuery(this.$route.query.project)
+			}
+		},
 		setProjectFromQuery(slug) {
 			const slugIndex = myProjects.findIndex((p) => p.slug === slug)
 			console.log({ slugIndex, slug })
@@ -241,7 +253,7 @@ export default {
 			this.selected.classList.add('show')
 			// zafarbim page title podla vybraneho projektu, nech ladia farby
 			// prettier-ignore
-			this.$refs.pageTitle.style.color = this.myProjects[this.realIndex].color.main
+			// this.$refs.pageTitle.style.color = this.myProjects[this.realIndex].color.main
 			const el = document.getElementById('showcase')
 			el.style.background = `linear-gradient(0deg, #0e031b91 29%, ${
 				this.myProjects[this.realIndex].color.main
@@ -259,7 +271,7 @@ export default {
 			)
 			this.showCase = false
 
-			this.$refs.pageTitle.style.color = '#38fdfe'
+			// this.$refs.pageTitle.style.color = '#38fdfe'
 			// aby po kliknuti na closebtn sa z animovali rychlejsie, inak by to trvalo ako pri renderi
 			this.projects.forEach(
 				(proj) => (proj.style.animationDelay = '50ms')
@@ -525,15 +537,11 @@ export default {
 @media (max-width: 620px) {
 	.projectShowcase {
 		justify-content: flex-start;
-		// height: auto;
 		overflow: auto;
-		padding: 100px 0;
-		// padding-bottom: 16rem;
+		padding: 85px 0;
 
 		.projects {
 			height: auto;
-			// padding-top: 1.5rem;
-			// padding-bottom: 17rem;
 			transform: translateX(0px);
 		}
 
@@ -542,16 +550,6 @@ export default {
 		}
 	}
 }
-@media (max-height: 750px) and (max-width: 800px) {
-	.project-page {
-		padding-bottom: 4rem;
-	}
-}
-// @media (max-width: 620px) and (max-height: 830px) {
-// 	.projectShowcase {
-// 		padding-bottom: 10rem;
-// 	}
-// }
 
 @media (max-width: 440px) {
 	.projects {
@@ -581,7 +579,7 @@ export default {
 
 @media (max-height: 690px) {
 	.projects {
-		height: 350px;
+		height: 355px;
 	}
 }
 @media (max-height: 570px) {

@@ -89,8 +89,25 @@ export default {
 		blogs() {
 			return this.$store.state.blogs || []
 		},
+		pageLoading() {
+			return this.$store.state.pageLoading
+		},
+	},
+	watch: {
+		pageLoading(loading) {
+			if (loading) return
+			this.fetchBlogs()
+			setTimeout(() => {
+				this.showBlogs = true
+				this.writingEffect(
+					'Zatiaľ žiadne články...',
+					this.$refs['no-blogs']
+				)
+			}, 1000)
+		},
 	},
 	mounted() {
+		if (this.pageLoading) return
 		this.fetchBlogs()
 		setTimeout(() => {
 			this.showBlogs = true

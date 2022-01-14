@@ -57,35 +57,25 @@ export default {
 			yTouch: null,
 		}
 	},
+	computed: {
+		draggingSign() {
+			return this.$store.state.draggingSign
+		},
+		loadingComponent() {
+			return this.$store.state.pageLoading
+		},
+	},
+	watch: {
+		loadingComponent(loading) {
+			if (loading) return
+			this.addEventListeners()
+			this.nextOnStart()
+		},
+	},
 	mounted() {
-		this.$refs.container.addEventListener(
-			'animationstart',
-			this.onAnimationStart
-		)
-		this.$refs.container.addEventListener(
-			'animationend',
-			this.onAnimationEnd
-		)
-
-		this.$refs.main.addEventListener(
-			'transitionstart',
-			this.onTransitionStart
-		)
-		this.$refs.main.addEventListener('transitionend', this.onTransitionEnd)
-
-		window.addEventListener('resize', this.debounce(this.onResize, 400))
-
-		if (this.$route.params.skillsPage) {
-			setTimeout(() => {
-				this.clickNext()
-			}, 1000)
-		} else {
-			setTimeout(() => {
-				if (!this.nextPage) {
-					this.clickSign = true
-				}
-			}, 1000)
-		}
+		if (this.loadingComponent) return
+		this.addEventListeners()
+		this.nextOnStart()
 	},
 	beforeDestroy() {
 		this.$refs.container.removeEventListener(
@@ -107,6 +97,40 @@ export default {
 		window.removeEventListener('resize', this.debounce(this.onResize, 400))
 	},
 	methods: {
+		nextOnStart() {
+			if (this.$route.params.skillsPage) {
+				setTimeout(() => {
+					this.clickNext()
+				}, 1000)
+			} else {
+				setTimeout(() => {
+					if (!this.nextPage) {
+						this.clickSign = true
+					}
+				}, 1000)
+			}
+		},
+		addEventListeners() {
+			this.$refs.container.addEventListener(
+				'animationstart',
+				this.onAnimationStart
+			)
+			this.$refs.container.addEventListener(
+				'animationend',
+				this.onAnimationEnd
+			)
+
+			this.$refs.main.addEventListener(
+				'transitionstart',
+				this.onTransitionStart
+			)
+			this.$refs.main.addEventListener(
+				'transitionend',
+				this.onTransitionEnd
+			)
+
+			window.addEventListener('resize', this.debounce(this.onResize, 400))
+		},
 		onResize() {
 			const comp = this.$refs.boxes
 			comp.calculateSizes('ghostAbout')
@@ -162,12 +186,13 @@ export default {
 			this.$store.commit('movingStars', this.nextPage)
 		},
 		onTouchStart(e) {
+			if (this.draggingSign) return
 			const firstTouch = e.touches[0]
 			this.xTouch = firstTouch.clientX
 			this.yTouch = firstTouch.clientY
 		},
 		onTouchMove(e) {
-			if (!this.xTouch || !this.yTouch) return
+			if (!this.xTouch || !this.yTouch || this.draggingSign) return
 
 			const xDiff = this.xTouch - e.touches[0].clientX
 			const yDiff = this.yTouch - e.touches[0].clientY
@@ -193,6 +218,7 @@ export default {
 .page-about-container {
 	width: 100%;
 	height: 100%;
+	// height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;

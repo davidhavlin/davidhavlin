@@ -19,10 +19,6 @@
 <script>
 export default {
 	props: {
-		loading: {
-			type: Boolean,
-			default: false,
-		},
 		showStars: {
 			type: Boolean,
 			default: true,
@@ -55,6 +51,9 @@ export default {
 		},
 		moveStars() {
 			return this.$store.state.moveStars
+		},
+		loading() {
+			return this.$store.state.pageLoading
 		},
 	},
 	watch: {

@@ -14,7 +14,11 @@
 					@errorLis="errorHandler"
 				/>
 			</div>
-			<div ref="parent" class="right-section"></div>
+			<div
+				ref="parent"
+				class="right-section"
+				:class="{ animate: rightSection }"
+			></div>
 		</div>
 	</div>
 </template>
@@ -27,8 +31,20 @@ export default {
 			success: false,
 			alert: false,
 			error: false,
-			timeout: null,
+			rightSection: false,
 		}
+	},
+	computed: {
+		pageLoading() {
+			this.$store.state.pageLoading
+		},
+	},
+	watch: {
+		pageLoading(loading) {
+			if (loading) return
+			this.effectHover()
+			this.rightSection = true
+		},
 	},
 	methods: {
 		alertHandler(value) {
@@ -52,13 +68,9 @@ export default {
 		},
 	},
 	mounted() {
+		if (this.pageLoading) return
 		this.effectHover()
-		this.timeout = setTimeout(() => {
-			this.$refs.parent.classList.add('animate')
-		}, 2000)
-	},
-	destroyed() {
-		clearTimeout(this.timeout)
+		this.rightSection = true
 	},
 	head() {
 		return {

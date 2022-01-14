@@ -1,9 +1,9 @@
 <template>
 	<div class="container">
-		<TheNavigationBar :loading="loading" />
+		<TheNavigationBar />
 		<NavigationSocials />
 		<Nuxt />
-		<Stars :show-stars="showStars" :loading="loading" />
+		<Stars :show-stars="showStars" />
 	</div>
 </template>
 
@@ -21,11 +21,7 @@ export default {
 				? (this.showStars = true)
 				: (this.showStars = false)
 
-			this.loading = true
 			if (this.moveStars) this.moveStars = false
-			setTimeout(() => {
-				this.loading = false
-			}, 2000)
 		},
 	},
 	mounted() {
@@ -140,9 +136,4 @@ body {
 		overflow: visible;
 	}
 }
-// @media (max-height: 450px) {
-// 	body {
-// 		height: 100vh;
-// 	}
-// }
 </style>

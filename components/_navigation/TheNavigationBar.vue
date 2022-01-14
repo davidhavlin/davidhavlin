@@ -1,20 +1,9 @@
 <template>
 	<nav class="navbar">
 		<!-- <NavigationLogo /> -->
-		<NavigationIcons :loading="loading" />
+		<NavigationIcons />
 	</nav>
 </template>
-
-<script>
-export default {
-	props: {
-		loading: {
-			type: Boolean,
-			default: true,
-		},
-	},
-}
-</script>
 
 <style lang="scss" scoped>
 .navbar {

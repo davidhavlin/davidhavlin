@@ -7,6 +7,8 @@ export const state = () => ({
 	elLeft: null,
 	blogs: [],
 	showcase: false,
+	draggingSign: false,
+	pageLoading: false,
 })
 
 export const mutations = {
@@ -36,6 +38,12 @@ export const mutations = {
 	},
 	TOGGLE_SHOWCASE(state) {
 		state.showcase = !state.showcase
+	},
+	SET_DRAGGING_SIGN(state, val) {
+		state.draggingSign = val
+	},
+	SET_PAGE_LOADING(state, val) {
+		state.pageLoading = val
 	},
 }
 

@@ -227,8 +227,9 @@ export default {
 	.project:hover {
 		outline: 3px solid var(--select-color);
 		background-position: -215px;
+
 		.title {
-			transform: translateX(123px); // toto sposobuje ten text flickering
+			transform: translateX(10%);
 		}
 		.gradient {
 			opacity: 1;

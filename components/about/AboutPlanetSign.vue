@@ -9,8 +9,8 @@
 		>
 			<div
 				class="bar"
-				@mousedown.prevent="onDragStart"
-				@touchstart.prevent="onDragStart"
+				@mousedown.prevent.stop="onDragStart"
+				@touchstart.prevent.stop="onDragStart"
 			>
 				<div class="exit" @click="closed = true">
 					<span><i class="fas fa-times"></i></span>
@@ -51,10 +51,14 @@ export default {
 			posY: 0,
 			elTop: EL_TOP,
 			elLeft: EL_LEFT,
-			dragging: false,
 			targetEl: null,
 			wrapper: null,
 		}
+	},
+	computed: {
+		dragging() {
+			return this.$store.state.draggingSign
+		},
 	},
 	mounted() {
 		window.addEventListener(
@@ -80,7 +84,7 @@ export default {
 		},
 
 		onDragStart(e) {
-			this.dragging = true
+			this.$store.commit('SET_DRAGGING_SIGN', true)
 			this.targetEl = this.$refs.sign
 			this.wrapper = this.targetEl.parentElement.getBoundingClientRect()
 			if (e.type === 'touchstart') {
@@ -96,6 +100,8 @@ export default {
 			}
 		},
 		onDragMove(e) {
+			this.$store.commit('SET_DRAGGING_SIGN', true)
+
 			const clientX =
 				e.type === 'touchmove' ? e.touches[0].clientX : e.clientX
 			const clienyY =
@@ -116,7 +122,7 @@ export default {
 			this.posY = clienyY
 		},
 		onDragEnd(e) {
-			this.dragging = false
+			this.$store.commit('SET_DRAGGING_SIGN', false)
 			this.targetEl = null
 			if (e.type === 'touchend') {
 				document.removeEventListener('touchmove', this.onTouchMove)

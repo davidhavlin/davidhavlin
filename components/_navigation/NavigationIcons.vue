@@ -56,15 +56,12 @@ export default {
 		ProjectsIcon,
 		ContactIcon,
 	},
-	props: {
-		loading: {
-			type: Boolean,
-			default: true,
-		},
-	},
 	computed: {
 		showcase() {
 			return this.$store.state.showcase
+		},
+		loading() {
+			return this.$store.state.pageLoading
 		},
 	},
 }
