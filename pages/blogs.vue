@@ -69,7 +69,6 @@
 		<div v-if="blogs.length > 2" class="fade-wrapper"></div>
 		<div class="stars-wrapper">
 			<Stars class="stars" />
-			<Stars class="stars2" />
 			<Stars class="stars3" />
 		</div>
 	</div>
@@ -95,7 +94,7 @@ export default {
 	},
 	watch: {
 		pageLoading(loading) {
-			if (loading) return
+			if (loading || this.blogs.length > 0) return
 			this.fetchBlogs()
 			setTimeout(() => {
 				this.showBlogs = true
@@ -107,7 +106,7 @@ export default {
 		},
 	},
 	mounted() {
-		if (this.pageLoading) return
+		if (this.pageLoading || this.blogs.length > 0) return
 		this.fetchBlogs()
 		setTimeout(() => {
 			this.showBlogs = true

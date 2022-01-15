@@ -107,7 +107,7 @@ export default {
 			}
 		},
 		onDragMove(e) {
-			if (e.target.id === 'exit') return
+			if (e.target.id === 'exit' || !this.targetEl) return
 
 			this.$store.commit('SET_DRAGGING_SIGN', true)
 

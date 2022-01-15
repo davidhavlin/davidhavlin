@@ -144,7 +144,7 @@ export default {
 		}
 	}
 }
-@media (max-width: 470px) and (max-height: 700px) {
+@media (max-width: 470px) and (max-height: 800px) {
 	.home-container {
 		.left-section {
 			padding-top: 3rem;
