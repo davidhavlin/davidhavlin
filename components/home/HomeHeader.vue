@@ -18,6 +18,7 @@ export default {
 			text: 'hello friend',
 			dots: '...',
 			timeout: null,
+			dotsTimeout: null,
 		}
 	},
 	mounted() {
@@ -28,6 +29,7 @@ export default {
 	},
 	destroyed() {
 		clearTimeout(this.timeout)
+		clearTimeout(this.dotsTimeout)
 	},
 	methods: {
 		helloFriend() {
@@ -76,7 +78,7 @@ export default {
 					if (!this.$refs.dots) return
 					this.$refs.dots.innerHTML += dot
 					if (index >= dotsArray.length - 1) {
-						setTimeout(() => {
+						this.dotsTimeout = setTimeout(() => {
 							this.$refs.dots.innerHTML = ''
 							this.threeDots()
 						}, 700)

@@ -76,7 +76,6 @@ export default {
 		this.nextOnStart()
 	},
 	beforeDestroy() {
-		console.log('BEFORE DESTROY')
 		this.$refs.container.removeEventListener(
 			'animationstart',
 			this.onAnimationStart

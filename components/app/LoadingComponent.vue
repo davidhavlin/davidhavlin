@@ -74,7 +74,6 @@ export default {
 					this.resetLoadingComponent()
 				})
 			}
-			console.log('ON LOADING END')
 		},
 		renderLines() {
 			if (this.loadingFinished) return
@@ -114,7 +113,6 @@ export default {
 			}, 400)
 		},
 		finish() {
-			console.log('FINISH')
 			// this.finishTimeout = setTimeout(() => {
 			// 	this.index = 0
 			// 	this.scale = 0

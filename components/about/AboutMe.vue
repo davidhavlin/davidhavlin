@@ -12,22 +12,16 @@
 		<div ref="box" class="box-content">
 			<transition name="title" mode="out-in">
 				<h2 v-if="!nextPage" key="about" class="about-title">
-					<!-- :class="[sliding ? 'nieco2' : 'nieco']" -->
 					About me
 				</h2>
-				<h2
-					v-else
-					key="skill"
-					:class="{ nieco: !sliding }"
-					class="skills-title"
-				>
+				<h2 v-else key="skill" class="skills-title">
 					Skills
 				</h2>
 			</transition>
 			<div
 				ref="boxContent"
 				class="box-text"
-				:class="{ sliding: sliding }"
+				:class="{ sliding: sliding || transitioning }"
 				:style="{ width: box.width, height: box.height }"
 			>
 				<div v-if="!nextPage">
@@ -331,5 +325,9 @@ $border-color-skill: #f7ab1e;
 		width: 100%;
 		padding: 1rem;
 	}
+}
+
+.sliding {
+	will-change: width, height;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container" :class="{ pageLoading }">
 		<TheNavigationBar />
 		<NavigationSocials />
 		<Nuxt />
@@ -14,6 +14,11 @@ export default {
 			showStars: false,
 			loading: false,
 		}
+	},
+	computed: {
+		pageLoading() {
+			return this.$store.state.pageLoading
+		},
 	},
 	watch: {
 		'$route.path'(newValue, oldValue) {
@@ -135,5 +140,10 @@ body {
 	body {
 		overflow: visible;
 	}
+}
+
+.pageLoading {
+	overflow: hidden;
+	pointer-events: none;
 }
 </style>

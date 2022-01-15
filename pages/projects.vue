@@ -260,7 +260,6 @@ export default {
 			} 302%)`
 		},
 		closeProject() {
-			console.log(this.$route)
 			this.$router.push({ query: {} })
 			const el = document.getElementById('showcase')
 			el.style.background = null
@@ -414,7 +413,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	justify-content: center;
 	align-items: center;
 	background: var(--main-bg-color);
@@ -536,9 +535,9 @@ export default {
 }
 @media (max-width: 620px) {
 	.projectShowcase {
-		justify-content: flex-start;
+		justify-content: center;
 		overflow: auto;
-		padding: 85px 0;
+		padding: 0 0;
 
 		.projects {
 			height: auto;
@@ -552,6 +551,9 @@ export default {
 }
 
 @media (max-width: 440px) {
+	.projectShowcase {
+		justify-content: flex-start;
+	}
 	.projects {
 		.ProjectBox:not(.selected)::after {
 			content: '';
