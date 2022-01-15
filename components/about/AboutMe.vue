@@ -326,8 +326,4 @@ $border-color-skill: #f7ab1e;
 		padding: 1rem;
 	}
 }
-
-.sliding {
-	will-change: width, height;
-}
 </style>

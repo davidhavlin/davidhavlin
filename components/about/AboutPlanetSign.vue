@@ -7,17 +7,19 @@
 			:style="{ top: elTop, left: elLeft }"
 		>
 			<div
-				id="bar"
 				class="bar"
 				@mousedown.prevent="onDragStart"
 				@touchstart.prevent="onDragStart"
 			>
 				<div
+					id="exit"
 					class="exit"
 					@click.stop="closed = true"
 					@touchstart.prevent="closed = true"
 				>
-					<span><i class="fas fa-times"></i></span>
+					<span style="pointer-events: none;"
+						><i class="fas fa-times"></i
+					></span>
 				</div>
 			</div>
 			<div class="heart">
@@ -88,7 +90,7 @@ export default {
 		},
 
 		onDragStart(e) {
-			if (e.target.id !== 'bar') return
+			if (e.target.id === 'exit') return
 			this.$store.commit('SET_DRAGGING_SIGN', true)
 			this.targetEl = this.$refs.sign
 			this.wrapper = this.targetEl.parentElement.getBoundingClientRect()
@@ -105,7 +107,7 @@ export default {
 			}
 		},
 		onDragMove(e) {
-			if (e.target.id !== 'bar') return
+			if (e.target.id === 'exit') return
 
 			this.$store.commit('SET_DRAGGING_SIGN', true)
 
