@@ -216,12 +216,15 @@ $border-color-skill: #f7ab1e;
 
 .box-content {
 	position: absolute;
-	top: 15%;
-	pointer-events: initial;
-	max-width: 420px;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	// max-width: 420px;
 	line-height: 22px;
 
-	transition: all 1s;
+	// transition: all 1s;
 }
 .title-wrapper {
 	position: absolute;
@@ -261,8 +264,10 @@ $border-color-skill: #f7ab1e;
 .box-text {
 	position: absolute;
 	left: 50%;
+	top: 20%;
 	transform: translateX(-50%);
 	transition: height 400ms, width 400ms;
+	pointer-events: initial;
 }
 
 .box-finished {
@@ -295,7 +300,7 @@ $border-color-skill: #f7ab1e;
 
 .ghost-wrapper {
 	visibility: hidden;
-	pointer-events: 0;
+	pointer-events: none;
 }
 .ghost-text {
 	max-width: 420px;
@@ -341,6 +346,10 @@ $border-color-skill: #f7ab1e;
 	.ghost-text {
 		width: 100%;
 		padding: 1rem;
+	}
+
+	.box-text {
+		top: 5%;
 	}
 }
 </style>
