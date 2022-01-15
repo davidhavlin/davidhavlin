@@ -14,11 +14,9 @@
 					@errorLis="errorHandler"
 				/>
 			</div>
-			<div
-				ref="parent"
-				class="right-section"
-				:class="{ animate: rightSection }"
-			></div>
+			<div class="right-section" :class="{ animate: rightSection }">
+				<div ref="parent" class="hover-image"></div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -109,6 +107,7 @@ export default {
 }
 
 .right-section {
+	user-select: none;
 	opacity: 0;
 	width: 50%;
 	height: 100%;
@@ -116,6 +115,11 @@ export default {
 	justify-content: flex-end;
 	align-items: flex-end;
 	transition: opacity 5s ease;
+}
+
+.hover-image {
+	width: 100%;
+	height: 100%;
 }
 
 .animate {

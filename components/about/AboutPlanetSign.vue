@@ -1,18 +1,22 @@
 <template>
-	<div ref="wrapper" class="wrapper">
+	<div ref="wrapper" class="wrapper" :class="{ closed }">
 		<div
-			v-if="!closed"
 			ref="sign"
 			class="sign"
-			:class="{ dragging: dragging }"
+			:class="{ dragging: dragging, closed }"
 			:style="{ top: elTop, left: elLeft }"
 		>
 			<div
+				id="bar"
 				class="bar"
-				@mousedown.prevent.stop="onDragStart"
-				@touchstart.prevent.stop="onDragStart"
+				@mousedown.prevent="onDragStart"
+				@touchstart.prevent="onDragStart"
 			>
-				<div class="exit" @click="closed = true">
+				<div
+					class="exit"
+					@click.stop="closed = true"
+					@touchstart.prevent="closed = true"
+				>
 					<span><i class="fas fa-times"></i></span>
 				</div>
 			</div>
@@ -84,6 +88,7 @@ export default {
 		},
 
 		onDragStart(e) {
+			if (e.target.id !== 'bar') return
 			this.$store.commit('SET_DRAGGING_SIGN', true)
 			this.targetEl = this.$refs.sign
 			this.wrapper = this.targetEl.parentElement.getBoundingClientRect()
@@ -100,6 +105,8 @@ export default {
 			}
 		},
 		onDragMove(e) {
+			if (e.target.id !== 'bar') return
+
 			this.$store.commit('SET_DRAGGING_SIGN', true)
 
 			const clientX =
@@ -171,7 +178,7 @@ export default {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1000000000000;
+	// z-index: 1000000000000;
 	pointer-events: none;
 }
 .sign {
@@ -255,5 +262,14 @@ export default {
 			color: #fff;
 		}
 	}
+}
+.closed {
+	transform: translate(30%, 30%) !important;
+	z-index: 1 !important;
+}
+.closed .sign {
+	transform: scale(0.01) !important;
+	// transition: transform 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	z-index: 1 !important;
 }
 </style>

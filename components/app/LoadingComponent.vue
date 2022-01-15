@@ -6,7 +6,11 @@
 				<div>
 					<h1 class="loading-title">loading</h1>
 					<div class="loading-bar">
-						<div ref="bar" class="bar"></div>
+						<div
+							ref="bar"
+							class="bar"
+							:style="{ transform: `scaleX(${scale})` }"
+						></div>
 					</div>
 					<div class="loading-time">
 						Estimated time remaining: {{ estimatedTime() }}
@@ -22,6 +26,7 @@ export default {
 	data() {
 		return {
 			loading: false,
+			loadingFinished: false,
 			lines: [
 				'$: > Booting systems...',
 				'$: > Total memory found: 256kb',
@@ -43,23 +48,36 @@ export default {
 			scale: 0,
 			loadingLines: ['2 days 13 hours 46 minutes', '2 seconds'],
 			index: 0,
+			linesTimeout: null,
+			startTimeout: null,
+			finishTimeout: null,
+			renderLinesTimeout: null,
 		}
 	},
 	watch: {
-		loading(newValue, oldValue) {
-			if (newValue) {
-				setTimeout(() => {
+		loading(loading) {
+			if (loading) {
+				this.linesTimeout = setTimeout(() => {
+					this.$refs.bar.addEventListener(
+						'transitionend',
+						this.onLoadingEnd
+					)
 					this.renderLines()
 				}, 300)
-			} else {
-				this.index = 0
-				this.scale = 0
 			}
 		},
 	},
-
 	methods: {
+		onLoadingEnd() {
+			if (this.loadingFinished) {
+				this.$nextTick(() => {
+					this.resetLoadingComponent()
+				})
+			}
+			console.log('ON LOADING END')
+		},
 		renderLines() {
+			if (this.loadingFinished) return
 			if (this.$refs.terminal) {
 				const li = `<li class="line">${this.lines[this.index]}</li>`
 				this.$refs.terminal.insertAdjacentHTML('beforeend', li)
@@ -73,15 +91,14 @@ export default {
 			}
 			if (this.index % 2) {
 				this.scale += 0.15
-				this.loadingBar()
+				if (this.scale > 1) {
+					this.loadingFinished = true
+				}
 			}
 			this.index++
-			setTimeout(() => {
+			this.renderLinesTimeout = setTimeout(() => {
 				this.renderLines()
 			}, 50)
-		},
-		loadingBar() {
-			this.$refs.bar.style.transform = `scaleX(${this.scale})`
 		},
 		estimatedTime() {
 			if (this.scale < 1) {
@@ -92,17 +109,33 @@ export default {
 		},
 		start() {
 			this.$store.commit('SET_PAGE_LOADING', true)
-			setTimeout(() => {
+			this.startTimeout = setTimeout(() => {
 				this.loading = true
 			}, 400)
 		},
 		finish() {
-			setTimeout(() => {
-				this.index = 0
-				this.scale = 0
-				this.loading = false
-				this.$store.commit('SET_PAGE_LOADING', false)
-			}, 1600)
+			console.log('FINISH')
+			// this.finishTimeout = setTimeout(() => {
+			// 	this.index = 0
+			// 	this.scale = 0
+			// 	this.loading = false
+			// 	this.$store.commit('SET_PAGE_LOADING', false)
+			// }, 1600)
+		},
+		resetLoadingComponent() {
+			this.loading = false
+			this.loadingFinished = false
+			this.index = 0
+			this.scale = 0
+			this.$store.commit('SET_PAGE_LOADING', false)
+			clearTimeout(this.linesTimeout)
+			clearTimeout(this.startTimeout)
+			clearTimeout(this.finishTimeout)
+			clearTimeout(this.renderLinesTimeout)
+			this.$refs.bar.removeEventListener(
+				'transitionend',
+				this.onLoadingEnd
+			)
 		},
 	},
 }

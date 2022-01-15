@@ -2,6 +2,7 @@ export default {
 	env: {
 		dev: process.env.NODE_ENV !== 'production',
 	},
+	router: { middleware: ['routeMiddleware'] },
 	loading: '~/components/app/LoadingComponent.vue',
 	/*
 	 ** Nuxt rendering mode

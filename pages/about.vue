@@ -27,8 +27,6 @@
 				/>
 				<div class="fog"></div>
 				<div class="movable-wrapper" :class="{ planetMove: nextPage }">
-					<!-- <AboutPlanetSign /> -->
-					<!-- <PlanetBig class="planet1" /> -->
 					<Planet class="planet2" />
 				</div>
 			</section>
@@ -78,6 +76,7 @@ export default {
 		this.nextOnStart()
 	},
 	beforeDestroy() {
+		console.log('BEFORE DESTROY')
 		this.$refs.container.removeEventListener(
 			'animationstart',
 			this.onAnimationStart
@@ -133,6 +132,7 @@ export default {
 		},
 		onResize() {
 			const comp = this.$refs.boxes
+			if (!comp) return
 			comp.calculateSizes('ghostAbout')
 			comp.calculateSizes('ghostSkill')
 			comp.setSize(this.nextPage ? 'skillSize' : 'aboutSize')
@@ -235,15 +235,25 @@ export default {
 	overflow: hidden;
 }
 .little-star {
-	transform: scale(0.01);
-	transition: all 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
-	left: 40% !important;
-	top: 30% !important;
-}
-.reveal {
-	transform: scale(1);
+	transform: translate(30%, 30%);
+	transition: transform 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86),
+		z-index 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
 	left: 0 !important;
 	top: 0 !important;
+	z-index: 1;
+}
+.reveal {
+	transform: translate(0, 0);
+	z-index: 1000000000000;
+}
+.little-star /deep/ .sign {
+	transform: scale(0.01);
+	transition: transform 700ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	z-index: 1;
+}
+.reveal /deep/ .sign {
+	transform: scale(1);
+	z-index: 1000000000000;
 }
 
 main {

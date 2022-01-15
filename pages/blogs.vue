@@ -4,7 +4,7 @@
 		:class="{ 'container-empty': blogs.length === 0 }"
 	>
 		<section class="title-wrapper">
-			<h1 class="page-title">Moje blogy</h1>
+			<h1 class="page-title">Moje články</h1>
 		</section>
 		<section
 			v-if="blogs.length > 0"
@@ -295,7 +295,7 @@ section.blogs-wrapper {
 		display: flex;
 		justify-content: space-between;
 		margin-top: auto;
-		color: #5f3397;
+		color: #bc8aff;
 		font-size: 12px;
 
 		.left-footer {
@@ -310,7 +310,7 @@ section.blogs-wrapper {
 	}
 
 	&-created {
-		color: #371364;
+		color: #7545b5;
 		font-size: 12px;
 	}
 
@@ -323,7 +323,7 @@ section.blogs-wrapper {
 
 	&-desc {
 		font-size: 14px;
-		color: #7545b5;
+		color: #b278ff;
 		margin-top: 3px;
 	}
 
@@ -353,9 +353,11 @@ section.blogs-wrapper {
 
 	&-no-blogs {
 		color: var(--select-color);
-		margin-top: 30px;
-		font-family: monospace;
-		height: 18px;
+		margin-top: 25px;
+		font-family: 'Press Start 2P';
+		font-size: 12px;
+		letter-spacing: -0.7px;
+		height: 12px;
 	}
 }
 

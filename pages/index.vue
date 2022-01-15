@@ -117,7 +117,7 @@ export default {
 
 		.left-section {
 			padding: 7rem 0;
-			height: 90vh;
+			height: 100vh;
 		}
 		.right-section {
 			position: relative;
