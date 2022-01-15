@@ -10,20 +10,22 @@
 		</div>
 
 		<div ref="box" class="box-content">
-			<transition name="title" mode="out-in">
-				<h2 v-if="!nextPage" key="about" class="about-title">
-					About me
-				</h2>
-				<h2 v-else key="skill" class="skills-title">
-					Skills
-				</h2>
-			</transition>
 			<div
 				ref="boxContent"
 				class="box-text"
-				:class="{ sliding: sliding || transitioning }"
+				:class="{ transitioning }"
 				:style="{ width: box.width, height: box.height }"
 			>
+				<div class="title-wrapper">
+					<transition name="title" mode="out-in">
+						<h2 v-if="!nextPage" key="about" class="about-title">
+							About me
+						</h2>
+						<h2 v-else key="skill" class="skills-title">
+							Skills
+						</h2>
+					</transition>
+				</div>
 				<div v-if="!nextPage">
 					<SectionAbout :transitioning="transitioning" />
 				</div>
@@ -156,11 +158,13 @@ export default {
 	},
 	methods: {
 		onTransitionStart(e) {
-			if (e.propertyName !== 'width' || this.showMore) return
+			// if (e.propertyName !== 'width' || this.showMore) return
+			if (!['width', 'height'].includes(e.propertyName)) return
 			this.transitioning = true
 		},
 		onTransitionEnd(e) {
-			if (e.propertyName !== 'width') return
+			// if (e.propertyName !== 'width') return
+			if (!['width', 'height'].includes(e.propertyName)) return
 			this.transitioning = false
 		},
 		boxFinished() {
@@ -219,9 +223,15 @@ $border-color-skill: #f7ab1e;
 
 	transition: all 1s;
 }
-
+.title-wrapper {
+	position: absolute;
+	top: 0;
+	left: 2px;
+	transform: translateY(-100%);
+}
 .about-title,
 .skills-title {
+	// position: absolute;
 	text-align: left;
 	font-family: 'Press Start 2P', cursive;
 	font-style: normal;
@@ -248,6 +258,13 @@ $border-color-skill: #f7ab1e;
 	color: #df1041;
 }
 
+.box-text {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	transition: height 400ms, width 400ms;
+}
+
 .box-finished {
 	.box-text p {
 		opacity: 1;
@@ -261,8 +278,8 @@ $border-color-skill: #f7ab1e;
 .box-text,
 .ghost-text {
 	$borderColor: #5903e2;
-	overflow: hidden;
-	position: relative;
+	// overflow: hidden;
+	// position: relative;
 	font-family: 'IBM Plex Mono', monospace;
 	font-weight: normal;
 	background: #391779;
@@ -270,7 +287,7 @@ $border-color-skill: #f7ab1e;
 	padding: 1.5rem;
 	box-shadow: $borderColor 0px 0.4em, $borderColor 0px -0.4em,
 		$borderColor 0.4em 0px, $borderColor -0.4em 0px;
-	transition: all 400ms ease;
+	// transition: all 400ms ease;
 	p {
 		opacity: 0;
 	}
