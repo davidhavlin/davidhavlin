@@ -7,9 +7,13 @@
 						v-for="star in stars"
 						:key="star.id"
 						class="star"
-						:class="star.size"
-						:style="{ left: star.left, top: star.top }"
-					></div>
+						:style="{
+							transform: `translate(${star.left}, ${star.top})`,
+						}"
+					>
+						<div :class="star.size"></div>
+					</div>
+					<!-- :style="{ left: star.left, top: star.top }" -->
 				</transition-group>
 			</div>
 		</div>
@@ -275,15 +279,16 @@ export default {
 .star {
 	position: absolute;
 	// background: rgb(0, 247, 255);
-	background: rgb(0, 187, 255);
 	z-index: 0;
 	display: inline-block;
-	transition: all 1s ease;
+	transition: transform 1s ease;
 }
 
 .little,
 .middle,
 .large {
+	background: rgb(0, 187, 255);
+
 	width: 1px;
 	height: 1px;
 	animation: star 1s infinite ease;
