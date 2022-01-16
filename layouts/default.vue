@@ -1,5 +1,5 @@
 <template>
-	<div class="container" :class="{ pageLoading }">
+	<div id="page-container" class="container" :class="{ pageLoading }">
 		<TheNavigationBar />
 		<NavigationSocials />
 		<Nuxt />
@@ -33,6 +33,13 @@ export default {
 		;['about', /* '/blogs', */ 'contact'].includes(this.$route.name)
 			? (this.showStars = true)
 			: (this.showStars = false)
+
+		document
+			.getElementById('page-container')
+			.addEventListener('animationend', (e) => {
+				if (!['pageEnter'].includes(e.animationName)) return
+				this.$store.commit('SET_PAGE_LOADING', false)
+			})
 	},
 }
 </script>

@@ -125,12 +125,11 @@ export default {
 				year: 'numeric',
 				month: 'numeric',
 				day: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+				minimumFractionDigits: 2,
 			}
-			const newDate = new Date(dateString).toLocaleDateString(
-				undefined,
-				options
-			)
-			return newDate.replaceAll('/', '.')
+			return dateString.toLocaleString('ru-RU', options)
 		},
 		randomNumber(max = 90, min = -90) {
 			return Math.floor(Math.random() * (max - min) + min)
@@ -201,7 +200,7 @@ export default {
 
 .page-title {
 	font-family: 'Press Start 2P', cursive;
-	font-size: 26px;
+	font-size: 23px;
 }
 section.title-wrapper {
 	margin-top: 6%;
@@ -397,6 +396,7 @@ section.blogs-wrapper {
 
 .stars-wrapper {
 	position: absolute;
+	pointer-events: none;
 	width: 100%;
 	height: 100%;
 	top: 0;

@@ -1,24 +1,28 @@
 <template>
-	<transition name="loadingComponent">
-		<div v-if="loading" class="loading-container">
-			<div class="loading">
-				<ul ref="terminal" class="terminal"></ul>
-				<div>
-					<h1 class="loading-title">loading</h1>
-					<div class="loading-bar">
-						<div
-							ref="bar"
-							class="bar"
-							:style="{ transform: `scaleX(${scale})` }"
-						></div>
-					</div>
-					<div class="loading-time">
-						Estimated time remaining: {{ estimatedTime() }}
-					</div>
+	<!-- <transition name="loadingComponent"> -->
+	<div
+		ref="containerRef"
+		class="loading-container"
+		:class="{ 'show-loading': loading, delayTransition }"
+	>
+		<div class="loading">
+			<ul ref="terminal" class="terminal"></ul>
+			<div>
+				<h1 class="loading-title">loading</h1>
+				<div class="loading-bar">
+					<div
+						ref="bar"
+						class="bar"
+						:class="{ 'loading-animation': animateBar }"
+					></div>
+				</div>
+				<div class="loading-time">
+					Estimated time remaining: {{ estimated }}
 				</div>
 			</div>
 		</div>
-	</transition>
+	</div>
+	<!-- </transition> -->
 </template>
 
 <script>
@@ -26,7 +30,6 @@ export default {
 	data() {
 		return {
 			loading: false,
-			loadingFinished: false,
 			lines: [
 				'$: > Booting systems...',
 				'$: > Total memory found: 256kb',
@@ -46,37 +49,31 @@ export default {
 				'$: > So, would you like a red or blue pill?',
 			],
 			scale: 0,
-			loadingLines: ['2 days 13 hours 46 minutes', '2 seconds'],
+			loadingLines: [
+				'2 days 13 hours 46 minutes',
+				'2 seconds',
+				'0 seconds',
+			],
 			index: 0,
-			linesTimeout: null,
-			startTimeout: null,
-			finishTimeout: null,
 			renderLinesTimeout: null,
+			animateBar: false,
+			delayTransition: true,
 		}
 	},
-	watch: {
-		loading(loading) {
-			if (loading) {
-				this.linesTimeout = setTimeout(() => {
-					this.$refs.bar.addEventListener(
-						'transitionend',
-						this.onLoadingEnd
-					)
-					this.renderLines()
-				}, 300)
+	computed: {
+		estimated() {
+			if (this.scale < 0.5) {
+				return this.loadingLines[0]
+			} else if (this.scale < 1) {
+				return this.loadingLines[1]
+			} else {
+				return this.loadingLines[2]
 			}
 		},
 	},
 	methods: {
-		onLoadingEnd() {
-			if (this.loadingFinished) {
-				this.$nextTick(() => {
-					this.resetLoadingComponent()
-				})
-			}
-		},
 		renderLines() {
-			if (this.loadingFinished) return
+			if (!this.loading) return
 			if (this.$refs.terminal) {
 				const li = `<li class="line">${this.lines[this.index]}</li>`
 				this.$refs.terminal.insertAdjacentHTML('beforeend', li)
@@ -90,50 +87,58 @@ export default {
 			}
 			if (this.index % 2) {
 				this.scale += 0.15
-				if (this.scale > 1) {
-					this.loadingFinished = true
-				}
 			}
 			this.index++
 			this.renderLinesTimeout = setTimeout(() => {
 				this.renderLines()
 			}, 50)
 		},
-		estimatedTime() {
-			if (this.scale < 1) {
-				return this.loadingLines[0]
-			} else {
-				return this.loadingLines[1]
-			}
-		},
 		start() {
 			this.$store.commit('SET_PAGE_LOADING', true)
-			this.startTimeout = setTimeout(() => {
-				this.loading = true
-			}, 400)
+			// this.renderLines()
+
+			this.loading = true
+
+			this.animateBar = true
+			this.$refs.bar.addEventListener(
+				'animationstart',
+				() => {
+					this.renderLines()
+				},
+				{ once: true }
+			)
+			this.$refs.bar.addEventListener(
+				'animationend',
+				this.onAnimationEnd,
+				{ once: true }
+			)
+
+			this.$refs.containerRef.addEventListener(
+				'transitionend',
+				this.onTransitionContainerEnd
+			)
 		},
-		finish() {
-			// this.finishTimeout = setTimeout(() => {
-			// 	this.index = 0
-			// 	this.scale = 0
-			// 	this.loading = false
-			// 	this.$store.commit('SET_PAGE_LOADING', false)
-			// }, 1600)
+		finish() {},
+		onAnimationEnd() {
+			this.delayTransition = false
+			this.loading = false
+		},
+		onTransitionContainerEnd(e) {
+			if (this.loading) return
+			this.resetLoadingComponent()
 		},
 		resetLoadingComponent() {
 			this.loading = false
-			this.loadingFinished = false
+			this.animateBar = false
 			this.index = 0
 			this.scale = 0
-			this.$store.commit('SET_PAGE_LOADING', false)
-			clearTimeout(this.linesTimeout)
-			clearTimeout(this.startTimeout)
-			clearTimeout(this.finishTimeout)
-			clearTimeout(this.renderLinesTimeout)
-			this.$refs.bar.removeEventListener(
+			this.$refs.terminal.innerHTML = ''
+			this.$refs.containerRef.removeEventListener(
 				'transitionend',
-				this.onLoadingEnd
+				this.onTransitionContainerEnd
 			)
+			clearTimeout(this.renderLinesTimeout)
+			// this.$store.commit('SET_PAGE_LOADING', false)
 		},
 	},
 }
@@ -144,6 +149,7 @@ $bar-border: #0a0213;
 $bar-color: #46009e;
 
 .loading-container {
+	pointer-events: none;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -214,9 +220,38 @@ $bar-color: #46009e;
 		background: $bar-color;
 		width: 100%;
 		height: 100%;
-		transform: scaleX(0.1);
+		transform: scaleX(0);
 		transform-origin: left;
-		transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		// transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+		&.loading-animation {
+			animation: loadingAnim 1s forwards;
+			animation-delay: 500ms;
+		}
+
+		@keyframes loadingAnim {
+			0% {
+				transform: scaleX(0);
+			}
+			10% {
+				transform: scaleX(0.2);
+			}
+			30% {
+				transform: scaleX(0.2);
+			}
+			50% {
+				transform: scaleX(0.5);
+			}
+			60% {
+				transform: scaleX(0.5);
+			}
+			80% {
+				transform: scaleX(0.7);
+			}
+			100% {
+				transform: scaleX(1);
+			}
+		}
 
 		&::after {
 			content: '';
@@ -238,20 +273,36 @@ $bar-color: #46009e;
 
 .loadingComponent-enter-active,
 .loadingComponent-leave-active {
-	transition: all 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	transition: transform 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19),
+		opacity 300ms ease;
+	// transition-delay: 200ms;
 }
-.loadingComponent-enter {
-	opacity: 0;
-	transform: translateY(-10%);
-}
+// .loadingComponent-enter-active {
+// 	transition-delay: 400ms;
+// }
+.loadingComponent-enter,
 .loadingComponent-leave-to {
-	transform: translateY(-10%);
 	opacity: 0;
+	transform: translateY(-10%);
 }
 
 @media (max-width: 500px) {
 	.terminal {
 		font-size: 1rem;
 	}
+}
+
+.loading-container {
+	transition: transform 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19),
+		opacity 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	opacity: 0;
+	transform: translateY(-10%);
+}
+.delayTransition {
+	transition-delay: 400ms;
+}
+.show-loading {
+	opacity: 1;
+	transform: translateY(0);
 }
 </style>

@@ -119,9 +119,11 @@ export default {
 					if (!this.showMore) {
 						this.transitioning = true
 					}
-					this.showMore
-						? this.setSize('skillSize')
-						: this.setSize('showLess')
+					if (this.showMore) {
+						this.setSize('skillSize')
+					} else {
+						this.setSize('showLess')
+					}
 				} else {
 					this.setSize('aboutSize')
 				}
@@ -340,7 +342,7 @@ $border-color-skill: #f7ab1e;
 @media (max-width: 430px) {
 	.box-content,
 	.ghost-wrapper {
-		padding: 7px;
+		padding: 25px;
 		// top: 40px;
 	}
 	.box-text,
