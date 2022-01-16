@@ -138,7 +138,10 @@ export default {
 				this.onTransitionContainerEnd
 			)
 			clearTimeout(this.renderLinesTimeout)
-			// this.$store.commit('SET_PAGE_LOADING', false)
+			this.$store.commit('SET_PAGE_LOADING', false)
+			// setTimeout(() => {
+
+			// })
 		},
 	},
 }
