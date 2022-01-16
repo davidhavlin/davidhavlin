@@ -248,10 +248,10 @@ $border-color-skill: #f7ab1e;
 	transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 300ms;
 	transition-delay: 400ms;
 }
-.title-leave-active {
-	transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-		opacity 120ms;
-}
+// .title-leave-active {
+// 	transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+// 		opacity 120ms;
+// }
 .title-enter, .title-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
 	opacity: 0;
@@ -301,6 +301,7 @@ $border-color-skill: #f7ab1e;
 .ghost-wrapper {
 	visibility: hidden;
 	pointer-events: none;
+	position: absolute;
 }
 .ghost-text {
 	max-width: 420px;
@@ -340,7 +341,7 @@ $border-color-skill: #f7ab1e;
 	.box-content,
 	.ghost-wrapper {
 		padding: 7px;
-		top: 40px;
+		// top: 40px;
 	}
 	.box-text,
 	.ghost-text {
@@ -349,7 +350,7 @@ $border-color-skill: #f7ab1e;
 	}
 
 	.box-text {
-		top: 5%;
+		top: 12.6%;
 	}
 }
 </style>
