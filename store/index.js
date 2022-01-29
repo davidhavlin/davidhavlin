@@ -58,10 +58,6 @@ export const mutations = {
 export const actions = {
 	async fetchBlogs({ commit }) {
 		commit('SET_FETCH_LOADING', true)
-		// commit('TOGGLE_LOADING_STARS')
-		// const loadingInterval = setInterval(() => {
-		// 	commit('TOGGLE_LOADING_STARS')
-		// }, 1000)
 
 		try {
 			const res = await delayFetch(this.$axios)
@@ -71,8 +67,6 @@ export const actions = {
 			return { error }
 		} finally {
 			commit('SET_FETCH_LOADING', false)
-			// clearInterval(loadingInterval)
-			// commit('TOGGLE_LOADING_STARS')
 		}
 	},
 }

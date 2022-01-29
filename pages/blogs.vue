@@ -110,7 +110,7 @@ const SHOWMECODE_URL = 'https://app-showmecode.herokuapp.com'
 export default {
 	name: 'Blogs',
 	herokuInfo:
-		'Keďže server hostím na heroku free plane tak prvý request môže trvať dlhšie, dočasné riešenie :)',
+		'Keďže server hostím na heroku free plane tak prvý request môže trvať dlhšie (poprípade je server offline keď využil všetky voľné hodiny), zatiaľ dočasné riešenie :)',
 	data() {
 		return {
 			index: 0,
@@ -189,7 +189,11 @@ export default {
 
 			if (error) {
 				this.messageColor = '#ff00a3'
-				this.writingEffect(error.message, this.$refs['no-blogs'])
+				let msg = error.message
+				if (msg === 'Network Error') {
+					msg += ',\r\n ShowMeCode.sk is offline \r\n try again later'
+				}
+				this.writingEffect(msg, this.$refs['no-blogs'])
 				return
 			}
 			if (data && data.length === 0) {
@@ -302,7 +306,7 @@ section.title-wrapper {
 		position: absolute;
 		// width: 300px;
 		// height: 300px;
-		min-width: 150px;
+		min-width: 180px;
 		padding: 15px;
 		border-radius: 4px;
 		top: 0;
@@ -324,7 +328,7 @@ section.title-wrapper {
 			border-bottom: 8px solid transparent;
 			border-left: 8px solid transparent;
 			border-right: 8px solid transparent;
-			transform: translate(-50%, 100%);
+			transform: translate(-50%, calc(100% + 1px));
 		}
 
 		&.tooltip-down {
@@ -541,6 +545,9 @@ section.blogs-wrapper {
 		font-size: 12px;
 		letter-spacing: -0.7px;
 		height: 12px;
+		text-align: center;
+		line-height: 19px;
+		white-space: pre;
 	}
 }
 
