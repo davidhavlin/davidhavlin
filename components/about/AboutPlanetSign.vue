@@ -83,8 +83,8 @@ export default {
 			const left = Math.floor(
 				Math.random() * Math.floor(window.innerWidth)
 			)
-			this.$store.commit('getElTop', top)
-			this.$store.commit('getElLeft', left)
+			this.$store.commit('SET_EL_TOP', top)
+			this.$store.commit('SET_EL_LEFT', left)
 
 			this.$store.commit('runMagicStars')
 		},

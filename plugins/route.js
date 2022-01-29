@@ -3,9 +3,9 @@ export default ({ app, store, router }) => {
 	app.router.afterEach((to, from) => {
 		store.commit('SET_PREVIOUS_ROUTE', from.name)
 
-		if (to.name === 'blogs') {
-			store.dispatch('fetchBlogs')
-		}
+		// if (to.name === 'blogs') {
+		// 	store.dispatch('fetchBlogs')
+		// }
 	})
 	// app.router.beforeEach((to, from, next) => {
 	// 	console.log({ to, from, next })

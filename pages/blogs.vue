@@ -4,7 +4,42 @@
 		:class="{ 'container-empty': blogs.length === 0 }"
 	>
 		<section class="title-wrapper">
-			<h1 class="page-title">Moje články</h1>
+			<div class="row items-center">
+				<h1 class="page-title">Moje články</h1>
+				<div
+					v-click-outside="onClickSomewhere"
+					class="title-info c-select fz-20 d-ml-md pointer"
+					@click="onClickInfo"
+				>
+					<i class="fas fa-info-circle"></i>
+					<div
+						v-show="showTooltip"
+						ref="tooltip"
+						:class="tooltipClass"
+						class="tooltip"
+					>
+						{{ $options.herokuInfo }}
+					</div>
+				</div>
+			</div>
+			<section v-if="blogs.length === 0 && !fetchLoading" class="message">
+				<div
+					ref="no-blogs"
+					:style="{ color: messageColor }"
+					class="blog-no-blogs"
+				>
+					<!-- Zatiaľ žiadne články... -->
+				</div>
+			</section>
+			<section
+				class="loading-container"
+				:class="{ 'hide-loading': !fetchLoading }"
+			>
+				<div class="loading-blogs row">
+					Loading
+					<div ref="dots" class="dots"></div>
+				</div>
+			</section>
 		</section>
 		<section
 			v-if="blogs.length > 0"
@@ -61,11 +96,7 @@
 				</div>
 			</div>
 		</section>
-		<section v-else>
-			<div ref="no-blogs" class="blog-no-blogs">
-				<!-- Zatiaľ žiadne články... -->
-			</div>
-		</section>
+
 		<div v-if="blogs.length > 2" class="fade-wrapper"></div>
 		<div class="stars-wrapper">
 			<Stars class="stars" />
@@ -78,10 +109,16 @@
 const SHOWMECODE_URL = 'https://app-showmecode.herokuapp.com'
 export default {
 	name: 'Blogs',
+	herokuInfo:
+		'Keďže server hostím na heroku free plane tak prvý request môže trvať dlhšie, dočasné riešenie :)',
 	data() {
 		return {
-			showBlogs: false,
 			index: 0,
+			alreadyFetched: false,
+			messageColor: '',
+			showTooltip: false,
+			dotsTimeout: null,
+			tooltipClass: '',
 		}
 	},
 	computed: {
@@ -91,34 +128,77 @@ export default {
 		pageLoading() {
 			return this.$store.state.pageLoading
 		},
+		fetchLoading() {
+			return this.$store.state.fetchLoading
+		},
 	},
 	watch: {
-		pageLoading(loading) {
-			if (loading || this.blogs.length > 0) return
-			this.fetchBlogs()
-			setTimeout(() => {
-				this.showBlogs = true
+		async pageLoading(loading) {
+			if (loading || this.blogs.length > 0 || this.alreadyFetched) return
+			await this.fetchBlogs()
+		},
+	},
+	async mounted() {
+		if (this.pageLoading || this.blogs.length > 0 || this.alreadyFetched)
+			return
+		await this.fetchBlogs()
+	},
+	destroyed() {
+		this.alreadyFetched = false
+	},
+	methods: {
+		onClickSomewhere() {
+			this.showTooltip = false
+		},
+		onClickInfo(e) {
+			const { top, left } = e.target.getBoundingClientRect()
+			const minSize = 200
+			const right = window.innerWidth - left
+			console.log({ top, left, right })
+			if (top < minSize && right < minSize) {
+				this.tooltipClass = 'tooltip-down tooltip-left'
+			} else if (top < minSize) {
+				// move down
+				this.tooltipClass = 'tooltip-down'
+			} else if (right < minSize) {
+				// move left
+				this.tooltipClass = 'tooltip-left'
+			}
+			this.showTooltip = !this.showTooltip
+		},
+		threeDots() {
+			const dotsArray = '...'.split('')
+			dotsArray.forEach((dot, index) => {
+				setTimeout(() => {
+					if (!this.$refs.dots) return
+					this.$refs.dots.innerHTML += dot
+					if (index >= dotsArray.length - 1) {
+						this.dotsTimeout = setTimeout(() => {
+							this.$refs.dots.innerHTML = ''
+							this.threeDots()
+						}, 700)
+					}
+				}, 700 * (index + 1))
+			})
+		},
+		async fetchBlogs() {
+			this.threeDots()
+			this.alreadyFetched = true
+
+			const { error, data } = await this.$store.dispatch('fetchBlogs')
+
+			if (error) {
+				this.messageColor = '#ff00a3'
+				this.writingEffect(error.message, this.$refs['no-blogs'])
+				return
+			}
+			if (data && data.length === 0) {
+				this.messageColor = '#ffb600'
 				this.writingEffect(
 					'Zatiaľ žiadne články...',
 					this.$refs['no-blogs']
 				)
-			}, 1000)
-		},
-	},
-	mounted() {
-		if (this.pageLoading || this.blogs.length > 0) return
-		this.fetchBlogs()
-		setTimeout(() => {
-			this.showBlogs = true
-			this.writingEffect(
-				'Zatiaľ žiadne články...',
-				this.$refs['no-blogs']
-			)
-		}, 1000)
-	},
-	methods: {
-		fetchBlogs() {
-			this.$store.dispatch('fetchBlogs')
+			}
 		},
 		formatDate(dateString) {
 			const options = {
@@ -129,7 +209,7 @@ export default {
 				minute: '2-digit',
 				minimumFractionDigits: 2,
 			}
-			return dateString.toLocaleString('ru-RU', options)
+			return new Date(dateString).toLocaleString('ru-RU', options)
 		},
 		randomNumber(max = 90, min = -90) {
 			return Math.floor(Math.random() * (max - min) + min)
@@ -204,6 +284,91 @@ export default {
 }
 section.title-wrapper {
 	margin-top: 6%;
+	position: relative;
+
+	.message,
+	.loading-container {
+		position: absolute;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.title-info {
+		position: relative;
+	}
+	.tooltip {
+		$borderColor: #38fdfe;
+		position: absolute;
+		// width: 300px;
+		// height: 300px;
+		min-width: 150px;
+		padding: 15px;
+		border-radius: 4px;
+		top: 0;
+		left: 50%;
+		background: #0d011c;
+		transform: translate(-50%, calc(-100% - 10px));
+		z-index: 10000000000;
+		font-size: 13px;
+		color: #fff;
+		border: 1px solid $borderColor;
+		user-select: none;
+
+		&:before {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			border-top: 8px solid $borderColor;
+			border-bottom: 8px solid transparent;
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+			transform: translate(-50%, 100%);
+		}
+
+		&.tooltip-down {
+			top: unset;
+			transform: translate(-50%, calc(0% + 10px));
+
+			&::before {
+				bottom: unset;
+				top: 0;
+				border-top: 8px solid transparent;
+				border-bottom: 8px solid $borderColor;
+				transform: translate(-50%, -100%);
+			}
+		}
+		&.tooltip-left {
+			transform: translate(-100%, calc(-100% - 10px));
+
+			&::before {
+				bottom: 0;
+				right: 0;
+				border-top: 8px solid transparent;
+				border-bottom: 8px solid transparent;
+				border-left: 8px solid transparent;
+				border-right: 8px solid $borderColor;
+				transform: translate(1px, 50%);
+			}
+		}
+
+		&.tooltip-down.tooltip-left {
+			top: unset;
+			bottom: 0;
+			transform: translate(-100%, calc(100% + 10px));
+
+			&::before {
+				bottom: unset;
+				left: unset;
+				border-top: 8px solid transparent;
+				border-bottom: 8px solid transparent;
+				border-left: 8px solid transparent;
+				border-right: 8px solid $borderColor;
+				transform: translate(1px, -9px);
+			}
+		}
+	}
 }
 section.blogs-wrapper {
 	display: grid;
@@ -212,6 +377,30 @@ section.blogs-wrapper {
 	margin-top: 30px;
 	position: relative;
 	z-index: 10;
+}
+.hide-loading {
+	visibility: hidden;
+	pointer-events: none;
+}
+.loading-blogs {
+	position: relative;
+	margin-top: 25px;
+	font-family: 'Press Start 2P', cursive;
+	color: #3afcfe;
+	animation: pulse 1s infinite;
+	filter: drop-shadow(0px 1px 16px #3afcfe);
+
+	.dots {
+		right: 0;
+		transform: translateX(100%);
+		position: absolute;
+	}
+}
+
+@keyframes pulse {
+	50% {
+		text-shadow: 1px 0px 14px #099295;
+	}
 }
 
 .fade-wrapper {
@@ -259,18 +448,14 @@ section.blogs-wrapper {
 	width: 100%;
 	margin-top: 24px;
 	background: #1e073a;
-	// border: 2px solid $borderColor;
-	// box-shadow: 0 4px 0 1px $borderColor, 0 1px 0 1px $borderColor;
-	box-shadow: $borderColor 0px 5px, $borderColor 0px -5px,
-		$borderColor 5px 0px, $borderColor -5px 0px;
+	box-shadow: $borderColor 0px 4px, $borderColor 0px -4px,
+		$borderColor 4px 0px, $borderColor -4px 0px;
 	font-family: monospace;
 	cursor: pointer;
 
 	&:hover {
-		// border-color: $hoverColor;
-		// box-shadow: 0 4px 0 1px $hoverColor, 0 1px 0 1px $hoverColor;
-		box-shadow: $hoverColor 0px 5px, $hoverColor 0px -5px,
-			$hoverColor 5px 0px, $hoverColor -5px 0px;
+		box-shadow: $hoverColor 0px 4px, $hoverColor 0px -4px,
+			$hoverColor 4px 0px, $hoverColor -4px 0px;
 
 		.blog-created {
 			color: $hoverColor;
@@ -429,7 +614,7 @@ section.blogs-wrapper {
 	}
 	100% {
 		opacity: 0;
-		transform: scale(2.7);
+		transform: scale(2.2);
 	}
 }
 </style>

@@ -46,12 +46,27 @@ export default {
                 '>','v','>','v','>','v','v','<','v','<','v',
                 '<','v','<','v','<','v','<','^','<','^','<',
                 '^','<','^','<','^','<','^','^','>','^','>',
-            ]
+            ],
+			// prettier-ignore
+			loadingMovement: [
+				'=','>','>','>','>','>','>','>','>','>',
+				'>','>','>','>','>',
+			]
+			// // prettier-ignore
+			// loadingMovement: [
+			// 	'=','>','>','>','>','>','>','>','>','>',
+			// 	'>','>','>','v','v','v','v','<','<',
+			// 	'<','<','<','<','<','<','<','<','<','<',
+			// 	'^','^','^','^',
+			// ],
 		}
 	},
 	computed: {
 		runMagicStars() {
 			return this.$store.state.magicStars
+		},
+		runLoadingStars() {
+			return this.$store.state.loadingStars
 		},
 		moveStars() {
 			return this.$store.state.moveStars
@@ -61,8 +76,11 @@ export default {
 		},
 	},
 	watch: {
-		runMagicStars(newValue, oldValue) {
-			this.magicStars()
+		runMagicStars() {
+			this.magicStars(this.movement)
+		},
+		runLoadingStars() {
+			this.magicStars(this.loadingMovement)
 		},
 	},
 
@@ -131,7 +149,10 @@ export default {
 		autoAddingStars() {
 			// if (!document.hasFocus()) return
 			this.timeout = setTimeout(() => {
-				if (this.stars.length >= this.movement.length) {
+				if (
+					this.stars.length >= this.movement.length &&
+					!this.$store.state.isEnoughStars
+				) {
 					this.$store.commit('enoughStars', true)
 				}
 				if (this.stars.length >= 50) {
@@ -143,15 +164,15 @@ export default {
 			}, 200)
 		},
 
-		magicStars() {
+		magicStars(movement) {
 			if (this.stars.length < 46) return
 			this.top = this.$store.state.elTop - 40
 			this.left = this.$store.state.elLeft
 
 			const starsCount = []
-			this.movement.map((move, index) => starsCount.push(index + 2))
+			movement.forEach((_, index) => starsCount.push(index + 2))
 
-			this.movement.forEach((move) => {
+			movement.forEach((move) => {
 				const number = Math.floor(Math.random() * starsCount.length)
 				const randomNum = starsCount[number]
 

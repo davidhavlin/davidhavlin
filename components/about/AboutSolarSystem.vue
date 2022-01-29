@@ -89,8 +89,8 @@ export default {
 	methods: {
 		loveJavascript(e) {
 			const coords = this.offset(e.target)
-			this.$store.commit('getElTop', coords.top)
-			this.$store.commit('getElLeft', coords.left)
+			this.$store.commit('SET_EL_TOP', coords.top)
+			this.$store.commit('SET_EL_LEFT', coords.left)
 
 			this.$store.commit('runMagicStars')
 		},
