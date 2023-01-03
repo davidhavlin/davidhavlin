@@ -1,5 +1,6 @@
 <template>
 	<div id="page-container" class="container" :class="{ pageLoading }">
+		<div class="banner">New portfolio is under construction...</div>
 		<TheNavigationBar />
 		<NavigationSocials />
 		<Nuxt />
@@ -69,6 +70,18 @@ html {
 
 a {
 	text-decoration: none;
+}
+
+.banner {
+	background-color: #eccd07;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	width: 100%;
+	padding: 4px;
+	text-align: center;
+	font-weight: bolder;
 }
 
 body {
